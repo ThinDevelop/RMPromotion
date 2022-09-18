@@ -1,0 +1,48 @@
+<resources>
+    <string name="app_name">RMPromotion</string>
+    <string name="product">สินค้า</string>
+    <string name="logout">ออกระบบ</string>
+    <string name="close_shift">ปิดกะ</string>
+    <string name="close_day">ปิดวัน</string>
+    <string name="login">เข้าสู่ระบบ</string>
+    <string name="bill_summary">ใบสรุปยอด</string>
+    <string name="user_name">ชื่อผู้ใช้งาน</string>
+    <string name="password">รหัสผ่าน</string>
+    <string name="back">กลับ</string>
+    <string name="cal_promotion">คำนวนโปรโมชั่น</string>
+    <string name="price_number">จำนวนเงิน</string>
+    <string name="print">พิมพ์</string>
+    <string name="year">ปี</string>
+    <string name="month">เดือน</string>
+    <string name="day">วัน</string>
+    <string name="shift">กะ</string>
+    <string name="username_password_incorrect">ชื่อผู้ใช้ หรือ รหัสผ่าน ไม่ถูกต้อง</string>
+
+    <string name="dialog_msg_logout">ออกจากระบบแล้ว</string>
+    <string name="dialog_msg_close_shift">ต้องการปิดกะหรือไม่</string>
+    <string name="dialog_msg_close_day">ต้องการปิดวันหรือไม่</string>
+    <string name="dialog_msg_price_not_match">ยอดเงินไม่เข้าเงื่อนไขกับ\nโปรโมชั่นใดๆ</string>
+    <string name="dialog_msg_print_price">ต้องการพิมพ์จำนวนเงิน %s บาท</string>
+    <string name="dialog_msg_close_day_complete">ปิดวันเรียบร้อย</string>
+    <string name="dialog_msg_close_shift_s_complete">ปิดกะ %s เรียบร้อย</string>
+
+    <string name="dialog_action_msg_close_shift">ปิดกะ</string>
+    <string name="dialog_action_msg_close_day">ปิดวัน</string>
+    <string name="dialog_msg_close_cancel">ไม่ปิด</string>
+    <string name="dialog_msg_close">ไม่ปิด</string>
+    <string name="dialog_msg_cancel">ยกเลิก</string>
+    <string name="dialog_msg_ok">ตกลง</string>
+
+
+    <string name="header_serial_no">เลขเครื่อง: %s</string>
+    <string name="header_shift_no">กะ: %s</string>
+    <string name="header_business_date">Business Date: %s</string>
+
+    <string name="header_promotion">โปรโมชั่น</string>
+    <string name="header_summary">ยอดขาย</string>
+
+    <string name="date_month_year">วัน/เดือน/ปี</string>
+    <string name="promotion_not_found">ไม่พบรายการ</string>
+
+
+</resources>
