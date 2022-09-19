@@ -10,7 +10,9 @@ import com.rm.promotion.model.*
 import com.rm.promotion.toDate
 import com.rm.promotion.util.FileUtils
 import com.rm.promotion.util.PreferenceUtils
+import org.json.JSONArray
 import org.json.JSONObject
+import org.json.JSONTokener
 
 class NetworkManager {
 
@@ -23,7 +25,7 @@ class NetworkManager {
         private val URL_REPORT = "$URL_DOMAIN/slip"
 
         private val STATUS_CODE_SUCCESS = 200
-
+        private val STATUS_CODE_USER_NOT_FOUND = 401
 
         fun login(
             username: String,
@@ -83,6 +85,13 @@ class NetworkManager {
                                 PreferenceUtils.stationName = stationName
 
                                 listener.onResponse(loginResponseModel)
+                            } else if (STATUS_CODE_USER_NOT_FOUND == status) {
+                                listener.onError(
+                                    NetworkErrorModel(
+                                        "1150",
+                                        "User or Password incorrect"
+                                    )
+                                )
                             } else {
                                 loginOffline(username, password, listener)
                             }
@@ -160,6 +169,30 @@ class NetworkManager {
                                 val stationName = station.optString("name_th")
                                 PreferenceUtils.stationId = stationId
                                 PreferenceUtils.stationName = stationName
+                                for (i in 0 until promotion.length()) {
+                                    val promo = promotion.getJSONObject(i)
+                                    if (promo.has("templates")) {
+                                        val  templateData = promo.get("templates").toString()
+                                        val json = JSONTokener(templateData).nextValue();
+                                        if (json is JSONObject){
+                                            val array = JSONArray()
+                                            array.put(json)
+                                            promo.remove("templates")
+                                            promo.put("templates", array)
+                                        }
+                                    }
+                                    if (promo.has("conditions")) {
+                                        val  conditionsData = promo.get("conditions").toString()
+                                        val json = JSONTokener(conditionsData).nextValue();
+                                        if (json is JSONObject){
+                                            val array = JSONArray()
+                                            array.put(json)
+                                            promo.remove("conditions")
+                                            promo.put("conditions", array)
+                                        }
+                                    }
+                                }
+
                                 PreferenceUtils.setPromotion(promotion.toString())
                                 PreferenceUtils.setUsers(users?.toString())
                                 PreferenceUtils.setProducts(products?.toString())

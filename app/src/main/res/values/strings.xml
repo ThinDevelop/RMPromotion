@@ -29,7 +29,7 @@
     <string name="dialog_action_msg_close_shift">ปิดกะ</string>
     <string name="dialog_action_msg_close_day">ปิดวัน</string>
     <string name="dialog_msg_close_cancel">ไม่ปิด</string>
-    <string name="dialog_msg_close">ไม่ปิด</string>
+    <string name="dialog_msg_close">ปิด</string>
     <string name="dialog_msg_cancel">ยกเลิก</string>
     <string name="dialog_msg_ok">ตกลง</string>
 

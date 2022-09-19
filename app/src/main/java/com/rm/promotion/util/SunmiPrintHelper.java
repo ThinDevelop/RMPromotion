@@ -402,6 +402,36 @@ public class SunmiPrintHelper {
     public void printSplit1() {
         printText("-----------------------\n", 30f, false, false);
     }
+    public void printSplitCut(Context context) {
+        Bitmap icon = BitmapFactory.decodeResource(context.getResources(),
+                R.drawable.scissorwithline);
+        printBitmap(icon, 0);
+    }
+
+    public void printTable(String[] txts, int[] width, int[] align, Boolean bold) {
+        if (bold) {
+            printTable(txts, width, align, 20f);
+        } else {
+            printTableNormal(txts, width, align, 20f);
+        }
+    }
+
+    public void printTableNormal(String[] txts, int[] width, int[] align, float size) {
+        if(sunmiPrinterService == null){
+            //TODO Service disconnection processing
+            return;
+        }
+
+        try {
+            if (size != 0) {
+                sunmiPrinterService.setFontSize(size, null);
+//                sunmiPrinterService.setPrinterStyle(WoyouConsts.ENABLE_BOLD, 1);
+            }
+            sunmiPrinterService.printColumnsString(txts, width, align, null);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * Print a row of a table

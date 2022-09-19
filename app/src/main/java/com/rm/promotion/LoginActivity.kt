@@ -54,10 +54,12 @@ class LoginActivity : AppCompatActivity() {
     }
 
     fun login(username: String, password: String) {
+        val dialog = DialogUtils.getLoadingDialog(this@LoginActivity)
+        dialog.show()
         NetworkManager.login(username, password, object : NetworkManager.Companion.NetworkLoginLisener<LoginResponseModel> {
             override fun onResponse(response: LoginResponseModel) {
                 Log.d("login", "onResponse")
-
+                dialog.dismiss()
                 val login = Login(
                     login_time = PreferenceUtils.loginTime,
                     business_date = PreferenceUtils.preferenceKeyBusinessDate,
@@ -80,10 +82,12 @@ class LoginActivity : AppCompatActivity() {
                     user_id = PreferenceUtils.currentUserId
                 )
                 FileUtils.saveLogin(this@LoginActivity, login)
+                dialog.dismiss()
                 toMainActivity()
             }
 
             override fun onError(errorModel: NetworkErrorModel) {
+                dialog.dismiss()
                 Toast.makeText(this@LoginActivity, R.string.username_password_incorrect, Toast.LENGTH_LONG).show()
             }
 
@@ -94,18 +98,23 @@ class LoginActivity : AppCompatActivity() {
     }
 
     fun getMaster() {
+        val dialog = DialogUtils.getLoadingDialog(this@LoginActivity)
+        dialog.show()
         NetworkManager.getDataMaster("1", object : NetworkManager.Companion.NetworkLisener<RMDataModel> {
             override fun onResponse(response: RMDataModel) {
+                dialog.dismiss()
                 Log.d("getDataMaster", "onResponse")
                 toMainActivity()
             }
 
             override fun onError(errorModel: NetworkErrorModel) {
+                dialog.dismiss()
                 toMainActivity()
                 Log.d("getDataMaster", "onError : "+ errorModel.msg)
             }
 
             override fun onExpired() {
+                dialog.dismiss()
                 toMainActivity()
                 Log.d("getDataMaster", "onExpired")
             }

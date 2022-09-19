@@ -13,6 +13,15 @@ import com.rm.promotion.R
 class DialogUtils {
 
     companion object {
+
+        fun getLoadingDialog(context: Context): Dialog {
+            val dialog = Dialog(context)
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialog.setCancelable(true)
+            dialog.setContentView(R.layout.view_loading)
+            return dialog
+        }
+
         fun showConfirmDialog(context: Context, msg: String, listener: OnClickButtonListener?) {
             val dialog = Dialog(context)
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)

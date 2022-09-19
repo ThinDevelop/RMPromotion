@@ -40,11 +40,14 @@ class ReportActivity : AppCompatActivity() {
         }
 
         binding.btnPrintSummary.setOnClickListener {
-
             val date = ""+binding.datePicker1.dayOfMonth +"/"+ (binding.datePicker1.getMonth() + 1)+"/"+binding.datePicker1.getYear()
             val date2 = ""+binding.datePicker1.year +"-"+ (binding.datePicker1.month + 1)+"-"+binding.datePicker1.dayOfMonth
             Log.d("picker value", date2 + pickerVals.get(shiftPicker))
-            NetworkManager.getReport(date2, pickerVals.get(shiftPicker), object : NetworkManager.Companion.NetworkLisener<GetReportResponseModel> {
+            var shift = pickerVals.get(shiftPicker)
+            if ("0".equals(pickerVals.get(shiftPicker))) {
+                shift = "null"
+            }
+            NetworkManager.getReport(date2, shift, object : NetworkManager.Companion.NetworkLisener<GetReportResponseModel> {
                 override fun onResponse(response: GetReportResponseModel) {
                     if (response.promotion.isEmpty()) {
                         Toast.makeText(this@ReportActivity, R.string.promotion_not_found, Toast.LENGTH_LONG).show()

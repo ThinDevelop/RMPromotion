@@ -7,7 +7,7 @@
         <entry key="app/src/main/res/font/prompt.xml" value="0.19074074074074074" />
         <entry key="app/src/main/res/font/roboto.xml" value="0.19074074074074074" />
         <entry key="app/src/main/res/layout/activity_calcurator.xml" value="0.34177215189873417" />
-        <entry key="app/src/main/res/layout/activity_login.xml" value="0.14027646500169677" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.23136685806810303" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.12408599853515628" />
         <entry key="app/src/main/res/layout/activity_report.xml" value="0.1" />
         <entry key="app/src/main/res/layout/dialog_view.xml" value="0.1" />
@@ -15,6 +15,7 @@
         <entry key="app/src/main/res/layout/product_item.xml" value="0.1" />
         <entry key="app/src/main/res/layout/view_action_dialog.xml" value="0.18369829683698297" />
         <entry key="app/src/main/res/layout/view_confirm_dialog.xml" value="0.15729166666666666" />
+        <entry key="app/src/main/res/layout/view_loading.xml" value="0.125" />
       </map>
     </option>
   </component>

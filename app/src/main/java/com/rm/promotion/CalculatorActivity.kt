@@ -44,9 +44,6 @@ class CalculatorActivity : AppCompatActivity() {
                     }
                 }, object : DialogUtils.OnClickButtonListener {
                     override fun onClick() {
-//                        print(Date(), productName, strPrice.toDouble().toCurrency(), "https://www.google.com/", "2345678987654567", "5")
-//                        return
-
                         val calculatePrice = calculatePrice(strPrice)
                         val promotionId = calculatePrice.promotionId
                         val promotionCount = calculatePrice.promotionTotal
@@ -112,8 +109,8 @@ class CalculatorActivity : AppCompatActivity() {
 
             val nowDate = Calendar.getInstance().time
             val startPrice = promotion.start_price.toFloat()
-            val startDate = promotion.start_date.toDate(DateFormatConstant.yyyy_MM_dd_T_HH_mm_ss_SSS_Z)
-            val endDate = promotion.end_date.toDate(DateFormatConstant.yyyy_MM_dd_T_HH_mm_ss_SSS_Z)
+            val startDate = promotion.start_date.toDate(DateFormatConstant.yyyy_MM_dd_HH_mm_ss_SSS)
+            val endDate = promotion.end_date.toDate(DateFormatConstant.yyyy_MM_dd_HH_mm_ss_SSS)
             try {
                 promotionLimit = promotion.use_max.toInt()
             } catch (e : Exception) {
@@ -210,6 +207,12 @@ class CalculatorActivity : AppCompatActivity() {
         SunmiPrintHelper.getInstance().printSubtitle("THANK YOU AND WELCOME")
         SunmiPrintHelper.getInstance().printSplit1()
 
+//        when (templateModel.line_type) {
+//            "0"->{SunmiPrintHelper.getInstance().printSplitCut(this@CalculatorActivity)}
+//            "1"->{SunmiPrintHelper.getInstance().printSplit1()}
+//            else->{}
+//        }
+
         val details = templateModel.detail
         if (details.size > 0) {
             for (detail in details) {
@@ -220,8 +223,7 @@ class CalculatorActivity : AppCompatActivity() {
                     } catch (e: Exception) {
 
                     }
-
-                SunmiPrintHelper.getInstance().printWithSize(detail.text_detail, fontSize)
+                SunmiPrintHelper.getInstance().printWithSize(detail.text_detail, fontSize*1.8f)
                 }
             }
             SunmiPrintHelper.getInstance().printTitle("จำนวน $promotionTotal สิทธิ์")
@@ -238,7 +240,7 @@ class CalculatorActivity : AppCompatActivity() {
 
                     }
 
-                    SunmiPrintHelper.getInstance().printWithSize(detail.text_detail, fontSize)
+                    SunmiPrintHelper.getInstance().printWithSize(detail.text_detail, fontSize*1.5f)
                 }
             }
 //            SunmiPrintHelper.getInstance().printText("ขั้นตอนการลุ้นโชค\n" +
@@ -262,6 +264,7 @@ class CalculatorActivity : AppCompatActivity() {
             SunmiPrintHelper.getInstance().printQr(qr, print_size, error_level)
             SunmiPrintHelper.getInstance().printSubtitle(qrText)
         }
+        SunmiPrintHelper.getInstance().feedPaper()
         SunmiPrintHelper.getInstance().feedPaper()
     }
 }

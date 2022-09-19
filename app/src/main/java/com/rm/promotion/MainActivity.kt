@@ -71,7 +71,7 @@ class MainActivity : AppCompatActivity() {
 
 
         binding.btnCloseDay.setOnClickListener {
-            DialogUtils.showActionDialog(this@MainActivity, getString(R.string.dialog_msg_close_shift)
+            DialogUtils.showActionDialog(this@MainActivity, getString(R.string.dialog_msg_close_day)
                 , object : DialogUtils.OnClickButtonListener {
                     override fun onClick() {}
 
@@ -112,6 +112,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun closeDay() {
+        val dialog = DialogUtils.getLoadingDialog(this@MainActivity)
+        dialog.show()
         val data = FileUtils.getJsonObjectFromFile(context = this)
         val newObj = data.putOpt("business_date", PreferenceUtils.preferenceKeyBusinessDate)
             .putOpt("user_id", PreferenceUtils.currentUserId)
@@ -120,6 +122,7 @@ class MainActivity : AppCompatActivity() {
 
         NetworkManager.closeShift(newObj, object : NetworkManager.Companion.NetworkLisener<CloseShiftResponseModel> {
             override fun onResponse(response: CloseShiftResponseModel) {
+                dialog.dismiss()
                 val date = response.business_date
                 val shiftModel = response.shift
                 PreferenceUtils.preferenceKeyBusinessDate = date
@@ -130,6 +133,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onError(errorModel: NetworkErrorModel) {
+                dialog.dismiss()
                 PreferenceUtils.preferenceKeyCurrentShift = "1"
                 val strDate = PreferenceUtils.preferenceKeyBusinessDate
                 val sdf = SimpleDateFormat(DateFormatConstant.yyyy_M_dd, Locale.getDefault())
@@ -150,6 +154,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun closeShift() {
+        val dialog = DialogUtils.getLoadingDialog(this@MainActivity)
+        dialog.show()
         val oldShift = PreferenceUtils.preferenceKeyCurrentShift
         val data = FileUtils.getJsonObjectFromFile(context = this)
         val newObj = data.putOpt("business_date", PreferenceUtils.preferenceKeyBusinessDate)
@@ -159,6 +165,7 @@ class MainActivity : AppCompatActivity() {
 
         NetworkManager.closeShift(newObj, object : NetworkManager.Companion.NetworkLisener<CloseShiftResponseModel> {
             override fun onResponse(response: CloseShiftResponseModel) {
+                dialog.dismiss()
                 val date = response.business_date
                 val shift = response.shift
                 PreferenceUtils.preferenceKeyBusinessDate = date
@@ -169,6 +176,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onError(errorModel: NetworkErrorModel) {
+                dialog.dismiss()
                 val shift = PreferenceUtils.preferenceKeyCurrentShift.toInt() +1
                 PreferenceUtils.preferenceKeyCurrentShift = shift.toString()
                 logoutWithMSG(getString(R.string.dialog_msg_close_shift_s_complete, oldShift))

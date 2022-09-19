@@ -71,6 +71,7 @@ object DateFormatConstant {
 
     const val yyyy_MM_dd_T_HH_mm_ss_Z = "yyyy-MM-dd'T'HH:mm:ss'Z'"
     const val yyyy_MM_dd_T_HH_mm_ss_SSS_Z = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+    const val yyyy_MM_dd_HH_mm_ss_SSS = "yyyy-MM-dd HH:mm:ss.SSS"
 
     const val yyyy_MM_dd_T_HH_mm_ss_SS_XXX = "yyyy-MM-dd'T'HH:mm:ss.SSXXX"
     const val yyyy_MM_dd_T_HH_mm_ss_SS_ZZZZZ = "yyyy-MM-dd'T'HH:mm:ss.SSZZZZZ"
