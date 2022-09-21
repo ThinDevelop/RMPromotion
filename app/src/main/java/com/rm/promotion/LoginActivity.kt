@@ -39,6 +39,7 @@ class LoginActivity : AppCompatActivity() {
         binding.include2.txtBusinessDate.text = getString(R.string.header_business_date, PreferenceUtils.getBusinessDate())
         binding.include2.txtSerialNo.text = getString(R.string.header_serial_no, android.os.Build.SERIAL)
         binding.include2.txtShiftNo.text = getString(R.string.header_shift_no, PreferenceUtils.preferenceKeyCurrentShift)
+        binding.vresion.text = "version. "+BuildConfig.VERSION_NAME
 
     }
 
