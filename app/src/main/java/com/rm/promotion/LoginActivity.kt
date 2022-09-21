@@ -13,7 +13,6 @@ import com.rm.promotion.model.RMDataModel
 import com.rm.promotion.network.NetworkManager
 import com.rm.promotion.util.DialogUtils
 import com.rm.promotion.util.FileUtils
-import com.rm.promotion.util.FileUtils.Companion.deleteJsonObjectFromFile
 import com.rm.promotion.util.PreferenceUtils
 
 class LoginActivity : AppCompatActivity() {
@@ -33,7 +32,7 @@ class LoginActivity : AppCompatActivity() {
                 if (username.isNotEmpty() && password.isNotEmpty()) {
                     login(username, password)
                 } else {
-                    Toast.makeText(this@LoginActivity, R.string.username_password_incorrect, Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@LoginActivity, R.string.login_please_field_data, Toast.LENGTH_LONG).show()
                 }
             }
         }
@@ -100,7 +99,7 @@ class LoginActivity : AppCompatActivity() {
     fun getMaster() {
         val dialog = DialogUtils.getLoadingDialog(this@LoginActivity)
         dialog.show()
-        NetworkManager.getDataMaster("1", object : NetworkManager.Companion.NetworkLisener<RMDataModel> {
+        NetworkManager.getDataMaster(object : NetworkManager.Companion.NetworkLisener<RMDataModel> {
             override fun onResponse(response: RMDataModel) {
                 dialog.dismiss()
                 Log.d("getDataMaster", "onResponse")

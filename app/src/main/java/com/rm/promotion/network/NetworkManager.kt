@@ -19,7 +19,7 @@ class NetworkManager {
     companion object {
         private val URL_DOMAIN = "http://188.166.190.55"
         private val URL_LOGIN = "$URL_DOMAIN/auth/login"
-        private val URL_GET_DATA_MASTER = "$URL_DOMAIN/station"
+        private val URL_GET_DATA_MASTER = "$URL_DOMAIN/station/master"
         private val URL_CLOSE_SHIFT = "$URL_DOMAIN/close/shift"
         private val URL_CLOSE_DATE = "$URL_DOMAIN/close/date"
         private val URL_REPORT = "$URL_DOMAIN/slip"
@@ -140,11 +140,13 @@ class NetworkManager {
             )
         }
 
-        fun getDataMaster(stationId: String, listener: NetworkLisener<RMDataModel>) {
-            AndroidNetworking.get(URL_GET_DATA_MASTER+"/"+stationId+"/master")
+        fun getDataMaster(listener: NetworkLisener<RMDataModel>) {
+            AndroidNetworking.post(URL_GET_DATA_MASTER)
                 .addHeaders("Authorization", "Bearer " + PreferenceUtils.token)
                 .addHeaders("Content-type", "application/json")
                 .addHeaders("Accept", "application/json")
+                .addBodyParameter("station_id", PreferenceUtils.stationId)
+                .addBodyParameter("mobile_pos_id", android.os.Build.SERIAL)
                 .setTag("getDataMaster")
                 .setPriority(Priority.HIGH)
                 .build()

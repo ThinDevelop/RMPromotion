@@ -28,9 +28,7 @@ class ReportActivity : AppCompatActivity() {
             onBackPressed()
         }
 
-        binding.datePicker1.maxDate = Calendar.getInstance().timeInMillis
-
-        val pickerVals = arrayOf("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20")
+        val pickerVals = arrayOf("ทั้งวัน", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20")
         binding.numberPicker.setMaxValue(pickerVals.size-1)
         binding.numberPicker.setMinValue(0)
         binding.numberPicker.setDisplayedValues(pickerVals)
@@ -44,7 +42,7 @@ class ReportActivity : AppCompatActivity() {
             val date2 = ""+binding.datePicker1.year +"-"+ (binding.datePicker1.month + 1)+"-"+binding.datePicker1.dayOfMonth
             Log.d("picker value", date2 + pickerVals.get(shiftPicker))
             var shift = pickerVals.get(shiftPicker)
-            if ("0".equals(pickerVals.get(shiftPicker))) {
+            if ("ทั้งวัน".equals(pickerVals.get(shiftPicker))) {
                 shift = "null"
             }
             NetworkManager.getReport(date2, shift, object : NetworkManager.Companion.NetworkLisener<GetReportResponseModel> {

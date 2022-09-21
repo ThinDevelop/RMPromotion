@@ -17,11 +17,12 @@ class RMPrintUtil {
             var shift = reportModel.shift
 //            val simpleDate = SimpleDateFormat(DateFormatConstant.yyyy_M_dd)
 //            val date = simpleDate.format(summaryDate)
-if (!shift.equals("null")) {
-    shift = "กะ$shift"
-} else {
-    shift = ""
-}
+            if (shift != null && !shift.equals("null")) {
+                shift = "กะ$shift"
+            } else {
+                shift = ""
+            }
+
             val dateFormated = summaryDate.toDate(DateFormatConstant.yyyy_M_dd)
             val simpleDate = SimpleDateFormat(DateFormatConstant.dd_M_yyyy, Locale.getDefault())
             val date = simpleDate.format(dateFormated)

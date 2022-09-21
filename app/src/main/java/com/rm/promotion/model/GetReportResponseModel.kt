@@ -2,7 +2,7 @@ package com.rm.promotion.model
 
 data class GetReportResponseModel(
     val summary_date: String,
-    val shift: String,
+    val shift: String?,
     val promotion: MutableList<PromotionReport>
 )
 

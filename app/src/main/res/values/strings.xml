@@ -17,6 +17,8 @@
     <string name="day">วัน</string>
     <string name="shift">กะ</string>
     <string name="username_password_incorrect">ชื่อผู้ใช้ หรือ รหัสผ่าน ไม่ถูกต้อง</string>
+    <string name="login_please_field_data">กรุณากรอกข้อมูล</string>
+
 
     <string name="dialog_msg_logout">ออกจากระบบแล้ว</string>
     <string name="dialog_msg_close_shift">ต้องการปิดกะหรือไม่</string>
