@@ -82,6 +82,8 @@ class CalculatorActivity : AppCompatActivity() {
                         return getString(R.string.dialog_msg_ok)
                     }
                 })
+            } else {
+                Toast.makeText(this@CalculatorActivity, R.string.login_please_field_number, Toast.LENGTH_LONG).show()
             }
         }
     }
