@@ -39,7 +39,7 @@
 
     <string name="header_serial_no">เลขเครื่อง: %s</string>
     <string name="header_shift_no">กะ: %s</string>
-    <string name="header_business_date">Business Date: %s</string>
+    <string name="header_business_date">วันที่ทำการ: %s</string>
 
     <string name="header_promotion">โปรโมชั่น</string>
     <string name="header_summary">ยอดขาย</string>

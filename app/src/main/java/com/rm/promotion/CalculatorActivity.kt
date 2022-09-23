@@ -138,18 +138,19 @@ class CalculatorActivity : AppCompatActivity() {
                             }
                             if (!condition.special_type.isEmpty()) {
                                 when (condition.special_type) {
-                                    "0"->{
+                                    "1"-> {
                                         val cross = condition.special_num.toInt()
                                         if (count > 0 && cross > 0) {
                                             count *=cross
                                         }
                                     }
-                                    "1"-> {
+                                    "2"-> {
                                         val plus = condition.special_num.toInt()
                                         if (count > 0) {
                                             count += plus
                                         }
                                     }
+                                    else->{}
                                 }
                             }
                         }

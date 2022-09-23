@@ -79,8 +79,6 @@ class NetworkManager {
                                 PreferenceUtils.loginTime = System.currentTimeMillis().toString()
                                 PreferenceUtils.setUsers(users?.toString())
                                 PreferenceUtils.setProducts(products?.toString())
-                                PreferenceUtils.preferenceKeyCurrentShift = shift
-                                PreferenceUtils.preferenceKeyBusinessDate = businessDate
                                 PreferenceUtils.stationId = stationId
                                 PreferenceUtils.stationName = stationName
 

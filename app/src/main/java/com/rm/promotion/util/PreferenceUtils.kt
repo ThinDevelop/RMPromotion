@@ -134,13 +134,13 @@ object PreferenceUtils {
     val promotion: List<PromotionModel>
         get() {
             val promotion = sharedPreferences.getString(PREFERENCE_KEY_PROMOTION, "")
-            if (users.isNullOrEmpty()) {
+            if (promotion.isNullOrEmpty()) {
                 return mutableListOf()
             }
             return Gson().fromJson(promotion, object : TypeToken<List<PromotionModel?>?>() {}.type)
         }
     var preferenceKeyCurrentShift: String
-        get() = sharedPreferences.getString(PREFERENCE_KEY_CURRENT_SHIFT, "1").toString()
+        get() = sharedPreferences.getString(PREFERENCE_KEY_CURRENT_SHIFT, "").toString()
         set(shift) {
             val editor = sharedPreferences.edit()
             editor.putString(PREFERENCE_KEY_CURRENT_SHIFT, shift).apply()

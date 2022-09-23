@@ -4,11 +4,11 @@ import android.content.Context
 import android.os.Environment
 import android.widget.Toast
 import com.google.gson.Gson
-import com.rm.promotion.model.Login
-import com.rm.promotion.model.SlipModel
-import com.rm.promotion.model.TransactionModel
+import com.rm.promotion.model.*
 import org.json.JSONObject
 import java.io.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 class FileUtils {
 
@@ -45,7 +45,8 @@ class FileUtils {
                         user_id = PreferenceUtils.currentUserId,
                         shift = PreferenceUtils.preferenceKeyCurrentShift,
                         slip = mutableListOf(slipModel),
-                        login = mutableListOf(login)
+                        login = mutableListOf(login),
+                        shift_data = mutableListOf()
                     )
                     val json = Gson().toJson(transactionModel)
                     writeFile(context, file, JSONObject(json))
@@ -54,6 +55,35 @@ class FileUtils {
             }
         }
 
+        fun saveNewBusiness(context: Context, shift: Shift) {
+            if (!isExternalStorageWritable()) {
+                Toast.makeText(context, "isExternalStorageWritable is false", Toast.LENGTH_LONG).show()
+            } else {
+                val file = File(context.getExternalFilesDir("data"), "data_shift.json")
+                if (file.exists()) {
+                    val orgData = getJsonObjectFromFile(context)
+                    val transactionModel = Gson().fromJson(orgData.toString(), TransactionModel::class.java)
+                    transactionModel.shift_data.apply {
+                        add(shift)
+                    }
+                    val json = Gson().toJson(transactionModel)
+                    writeFile(context, file, JSONObject(json))
+                } else {
+                    val transactionModel = TransactionModel(
+                        station_id = PreferenceUtils.stationId,
+                        mobile_pos_id = android.os.Build.SERIAL,
+                        business_date = PreferenceUtils.preferenceKeyBusinessDate,
+                        user_id = PreferenceUtils.currentUserId,
+                        shift = PreferenceUtils.preferenceKeyCurrentShift,
+                        slip = mutableListOf(),
+                        login = mutableListOf(),
+                        shift_data = mutableListOf(shift)
+                    )
+                    val json = Gson().toJson(transactionModel)
+                    writeFile(context, file, JSONObject(json))
+                }
+            }
+        }
         fun saveLogin(context: Context, login: Login) {
             if (!isExternalStorageWritable()) {
                 Toast.makeText(context, "isExternalStorageWritable is false", Toast.LENGTH_LONG).show()
@@ -75,7 +105,8 @@ class FileUtils {
                         user_id = PreferenceUtils.currentUserId,
                         shift = PreferenceUtils.preferenceKeyCurrentShift,
                         slip = mutableListOf(),
-                        login = mutableListOf(login)
+                        login = mutableListOf(login),
+                        shift_data = mutableListOf()
                     )
                     val json = Gson().toJson(transactionModel)
                     writeFile(context, file, JSONObject(json))
@@ -87,6 +118,38 @@ class FileUtils {
             val file = File(context.getExternalFilesDir("data"), "data_shift.json")
             if (!file.exists()) return true
             return file.delete()
+        }
+
+        fun fileIsExists(context: Context): Boolean {
+            val file = File(context.getExternalFilesDir("data"), "data_shift.json")
+            return file.exists()
+        }
+
+        fun getFile(context: Context): TransactionModel {
+            val orgData = getJsonObjectFromFile(context)
+            return Gson().fromJson(orgData.toString(), TransactionModel::class.java)
+        }
+
+        fun setEndDate(context: Context, close_date: Boolean = false) {
+            if (!isExternalStorageWritable()) {
+                Toast.makeText(context, "isExternalStorageWritable is false", Toast.LENGTH_LONG).show()
+            } else {
+                val file = File(context.getExternalFilesDir("data"), "data_shift.json")
+                if (file.exists()) {
+                    val orgData = getJsonObjectFromFile(context)
+                    val transactionModel = Gson().fromJson(orgData.toString(), TransactionModel::class.java)
+                    transactionModel.shift_data.filter { it.end_date.isEmpty() }.first().apply {
+                        val sdf = SimpleDateFormat(
+                            DateFormatConstant.yyyy_MM_dd_HH_mm_ss,
+                            Locale.getDefault()
+                        )
+                        this.end_date = sdf.format(Date())
+                        this.close_date = close_date
+                    }
+                    val json = Gson().toJson(transactionModel)
+                    writeFile(context, file, JSONObject(json))
+                }
+            }
         }
 
         fun getJsonObjectFromFile(context: Context): JSONObject {

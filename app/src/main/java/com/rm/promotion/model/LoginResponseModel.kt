@@ -5,7 +5,7 @@ data class LoginResponseModel(
     val profile: Profile,
     val users: MutableList<UserModel>,
     val products: MutableList<ProductModel>,
-    val promotions_sync: Boolean,
+    val promotion_sync: Boolean,
     val shift: ShiftModel
 )
 

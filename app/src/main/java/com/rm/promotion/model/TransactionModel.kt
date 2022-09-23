@@ -7,7 +7,8 @@ data class TransactionModel(
     val shift: String,
     val user_id: String,
     val slip: MutableList<SlipModel>,
-    val login: MutableList<Login>
+    val login: MutableList<Login>,
+    val shift_data: MutableList<Shift>
 )
 
 data class Login(
@@ -15,5 +16,13 @@ data class Login(
     val business_date: String,
     val shift: String = "1",
     val user_id: String
+)
+
+data class Shift(
+    val business_date: String,
+    val shift: String,
+    val start_date: String,
+    var end_date: String = "",
+    var close_date: Boolean = false
 )
 

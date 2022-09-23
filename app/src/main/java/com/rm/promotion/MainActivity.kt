@@ -114,6 +114,7 @@ class MainActivity : AppCompatActivity() {
     fun closeDay() {
         val dialog = DialogUtils.getLoadingDialog(this@MainActivity)
         dialog.show()
+        FileUtils.setEndDate(this@MainActivity, true)
         val data = FileUtils.getJsonObjectFromFile(context = this)
         val newObj = data.putOpt("business_date", PreferenceUtils.preferenceKeyBusinessDate)
             .putOpt("user_id", PreferenceUtils.currentUserId)
@@ -123,16 +124,16 @@ class MainActivity : AppCompatActivity() {
         NetworkManager.closeShift(newObj, object : NetworkManager.Companion.NetworkLisener<CloseShiftResponseModel> {
             override fun onResponse(response: CloseShiftResponseModel) {
                 dialog.dismiss()
-                val date = response.business_date
-                val shiftModel = response.shift
-                PreferenceUtils.preferenceKeyBusinessDate = date
-                PreferenceUtils.preferenceKeyCurrentShift = shiftModel
+                PreferenceUtils.preferenceKeyCurrentShift = "1"
+                PreferenceUtils.preferenceKeyBusinessDate = response.business_date
+
                 FileUtils.deleteJsonObjectFromFile(this@MainActivity)
                 logoutWithMSG(getString(R.string.dialog_msg_close_day_complete))
                 //success delete file and logout
             }
 
             override fun onError(errorModel: NetworkErrorModel) {
+                Toast.makeText(this@MainActivity, "ข้อมูลยังไม่ถูกส่งไปยังฐานข้อมูล", Toast.LENGTH_LONG).show()
                 dialog.dismiss()
                 PreferenceUtils.preferenceKeyCurrentShift = "1"
                 val strDate = PreferenceUtils.preferenceKeyBusinessDate
@@ -156,6 +157,7 @@ class MainActivity : AppCompatActivity() {
     fun closeShift() {
         val dialog = DialogUtils.getLoadingDialog(this@MainActivity)
         dialog.show()
+        FileUtils.setEndDate(this@MainActivity)
         val oldShift = PreferenceUtils.preferenceKeyCurrentShift
         val data = FileUtils.getJsonObjectFromFile(context = this)
         val newObj = data.putOpt("business_date", PreferenceUtils.preferenceKeyBusinessDate)
@@ -166,16 +168,15 @@ class MainActivity : AppCompatActivity() {
         NetworkManager.closeShift(newObj, object : NetworkManager.Companion.NetworkLisener<CloseShiftResponseModel> {
             override fun onResponse(response: CloseShiftResponseModel) {
                 dialog.dismiss()
-                val date = response.business_date
-                val shift = response.shift
-                PreferenceUtils.preferenceKeyBusinessDate = date
-                PreferenceUtils.preferenceKeyCurrentShift = shift
+                val shift = PreferenceUtils.preferenceKeyCurrentShift.toInt() +1
+                PreferenceUtils.preferenceKeyCurrentShift = shift.toString()
                 FileUtils.deleteJsonObjectFromFile(this@MainActivity)
                 logoutWithMSG(getString(R.string.dialog_msg_close_shift_s_complete, oldShift))
                 //success delete file and logout add new shift and businessDate
             }
 
             override fun onError(errorModel: NetworkErrorModel) {
+                Toast.makeText(this@MainActivity, "ข้อมูลยังไม่ถูกส่งไปยังฐานข้อมูล", Toast.LENGTH_LONG).show()
                 dialog.dismiss()
                 val shift = PreferenceUtils.preferenceKeyCurrentShift.toInt() +1
                 PreferenceUtils.preferenceKeyCurrentShift = shift.toString()
