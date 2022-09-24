@@ -10,7 +10,7 @@ data class PromotionModel(
     val start_price: String = "1",
     val end_price: String,
     val use_num: String = "1",
-    val use_max: String = "5",
+    val use_max: String = "100",
     val priority: String,
     val child_id: String,
     val conditions: MutableList<ConditionModel>?,
