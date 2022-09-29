@@ -2,7 +2,6 @@ package com.rm.promotion.util;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Typeface;
 import android.os.RemoteException;
 import android.widget.Toast;
 
@@ -387,6 +386,10 @@ public class SunmiPrintHelper {
         printText(text+"\n", size, false, false);
     }
 
+    public void printWithSize(String text, float size, boolean isBold) {
+        printText(text+"\n", size, isBold, false);
+    }
+
     public void printSubtitle(String text) {
         printText(text+"\n", 20f, false, false);
     }
@@ -401,6 +404,9 @@ public class SunmiPrintHelper {
 
     public void printSplit1() {
         printText("-----------------------\n", 30f, false, false);
+    }
+    public void printSplitSpace() {
+        printText("\n", 5f, false, false);
     }
     public void printSplitCut(Context context) {
         Bitmap icon = BitmapFactory.decodeResource(context.getResources(),

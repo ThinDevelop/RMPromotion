@@ -7,7 +7,9 @@ class QRUtils {
     companion object {
         fun getQRCode(promotionId: String, promotionTotal: String): Pair<String, String> {
             if (promotionTotal.length > 2) return Pair("","")
-            val domain = "https://posoillucktest.pttor.com/Register?data="
+            val domain_uat = "https://posoillucktest.pttor.com/Register?data="
+            val domain_prod = "https://posoillucktest.pttor.com/Register?data="
+
             var qrCode = ""
             var qrcodeText = ""
             val data = StringBuilder()
@@ -31,7 +33,7 @@ class QRUtils {
                 qrcodeText = result.resultEncryptData.qrcodeText
                 qrCode = result.resultEncryptData.qrcode
             }
-            return Pair(domain+qrCode, qrcodeText)
+            return Pair(domain_uat+qrCode, qrcodeText)
         }
 
         private fun getPromotionRunning(): String {

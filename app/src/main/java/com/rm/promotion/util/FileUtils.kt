@@ -169,6 +169,172 @@ class FileUtils {
             return JSONObject(responce)
         }
 
+        fun addSlip(context: Context, summary: PromotionSummary) {
+            addSummaryData(context, summary)
+            addSummaryShift(context, summary)
+        }
+
+        fun addSummaryData(context: Context, summary: PromotionSummary) {
+            if (!isExternalStorageWritable()) {
+                Toast.makeText(context, "isExternalStorageWritable is false", Toast.LENGTH_LONG).show()
+            } else {
+                val file = File(context.getExternalFilesDir("data"), "data_summary_date.json")
+                if (file.exists()) {
+                    val orgData = getSummaryDateJsonObjectFromFile(context)
+                    val summaryModel = Gson().fromJson(orgData.toString(), SummaryDate::class.java)
+                    summaryModel.apply {
+                        this.shift = PreferenceUtils.preferenceKeyCurrentShift
+                        this.summary_date = PreferenceUtils.preferenceKeyBusinessDate
+                        var added = false
+                        var hasPromotion = false
+                        this.promotion.forEach {
+                            var number = ""
+                            var slip = ""
+                            var sumSlip = 0
+                            if (summary.summary_slips.isNotEmpty()) {
+                                number = summary.summary_slips.first().numbers
+                                slip = summary.summary_slips.first().slips
+                            }
+
+                            if (it.promotion_code.equals(summary.promotion_code)) {
+                                hasPromotion = true
+                                it.summary_slips.forEach { slips->
+                                    if (slips.numbers.equals(number)) {
+                                        val slipBase = slips.slips.toInt()
+                                        sumSlip = slip.toInt()+slipBase
+                                        slips.slips = sumSlip.toString()
+                                        added = true
+                                        return@forEach
+                                    }
+                                }
+                                if (!added) {
+                                    it.summary_slips.add(SummarySlips(number, slip))
+                                }
+                                return@forEach
+                            }
+                        }
+                        if (!hasPromotion) {
+                            this.promotion.add(summary)
+                        }
+                    }
+                    val json = Gson().toJson(summaryModel)
+                    writeFile(context, file, JSONObject(json))
+                } else {
+                    val summaryShift = SummaryShift(
+                        PreferenceUtils.preferenceKeyBusinessDate,
+                        PreferenceUtils.preferenceKeyCurrentShift,
+                        arrayListOf(summary)
+                    )
+                    val json = Gson().toJson(summaryShift)
+                    writeFile(context, file, JSONObject(json))
+                }
+            }
+        }
+
+        fun getSummaryDateJsonObjectFromFile(context: Context): JSONObject {
+            val file = File(context.getExternalFilesDir("data"), "data_summary_date.json")
+            if (!file.exists()) return JSONObject()
+            val fileReader = FileReader(file)
+            val bufferedReader = BufferedReader(fileReader)
+            val stringBuilder = StringBuilder()
+            var line = bufferedReader.readLine()
+            while (line != null) {
+                stringBuilder.append(line).append("\n")
+                line = bufferedReader.readLine()
+            }
+            bufferedReader.close()
+            val responce = stringBuilder.toString()
+
+            return JSONObject(responce)
+        }
+
+        fun deleteSummaryDay(context: Context): Boolean {
+            val file = File(context.getExternalFilesDir("data"), "data_summary_date.json")
+            if (!file.exists()) return true
+            return file.delete()
+        }
+
+        fun deleteSummaryShift(context: Context): Boolean {
+            val file = File(context.getExternalFilesDir("data"), "data_summary_shift.json")
+            if (!file.exists()) return true
+            return file.delete()
+        }
+
+        fun addSummaryShift(context: Context, summary: PromotionSummary) {
+            if (!isExternalStorageWritable()) {
+                Toast.makeText(context, "isExternalStorageWritable is false", Toast.LENGTH_LONG).show()
+            } else {
+                val file = File(context.getExternalFilesDir("data"), "data_summary_shift.json")
+                if (file.exists()) {
+                    val orgData = getSummaryShiftJsonObjectFromFile(context)
+                    val summaryModel = Gson().fromJson(orgData.toString(), SummaryShift::class.java)
+
+                    summaryModel.apply {
+                        this.shift = PreferenceUtils.preferenceKeyCurrentShift
+                        this.summary_date = PreferenceUtils.preferenceKeyBusinessDate
+                        var added = false
+                        var hasPromotion = false
+                        this.promotion.forEach {
+                            var number = ""
+                            var slip = ""
+                            var sumSlip = 0
+                            if (summary.summary_slips.isNotEmpty()) {
+                                number = summary.summary_slips.first().numbers
+                                slip = summary.summary_slips.first().slips
+                            }
+
+                            if (it.promotion_code.equals(summary.promotion_code)) {
+                                hasPromotion = true
+                                it.summary_slips.forEach { slips->
+                                    if (slips.numbers.equals(number)) {
+                                        val slipBase = slips.slips.toInt()
+                                        sumSlip = slip.toInt()+slipBase
+                                        slips.slips = sumSlip.toString()
+                                        added = true
+                                        return@forEach
+                                    }
+                                }
+                                if (!added) {
+                                    it.summary_slips.add(SummarySlips(number, slip))
+                                }
+                                return@forEach
+                            }
+                        }
+                        if (!hasPromotion) {
+                            this.promotion.add(summary)
+                        }
+                    }
+                    val json = Gson().toJson(summaryModel)
+                    writeFile(context, file, JSONObject(json))
+                } else {
+                    val summaryShift = SummaryShift(
+                        PreferenceUtils.preferenceKeyBusinessDate,
+                        PreferenceUtils.preferenceKeyCurrentShift,
+                        arrayListOf(summary)
+                    )
+                    val json = Gson().toJson(summaryShift)
+                    writeFile(context, file, JSONObject(json))
+                }
+            }
+        }
+
+        fun getSummaryShiftJsonObjectFromFile(context: Context): JSONObject {
+            val file = File(context.getExternalFilesDir("data"), "data_summary_shift.json")
+            if (!file.exists()) return JSONObject()
+            val fileReader = FileReader(file)
+            val bufferedReader = BufferedReader(fileReader)
+            val stringBuilder = StringBuilder()
+            var line = bufferedReader.readLine()
+            while (line != null) {
+                stringBuilder.append(line).append("\n")
+                line = bufferedReader.readLine()
+            }
+            bufferedReader.close()
+            val responce = stringBuilder.toString()
+
+            return JSONObject(responce)
+        }
+
 
         private fun writeFile(context: Context, file: File, obj: JSONObject) {
             try {

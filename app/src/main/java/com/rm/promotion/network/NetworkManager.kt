@@ -7,17 +7,21 @@ import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONObjectRequestListener
 import com.google.gson.Gson
 import com.rm.promotion.model.*
-import com.rm.promotion.toDate
-import com.rm.promotion.util.FileUtils
 import com.rm.promotion.util.PreferenceUtils
 import org.json.JSONArray
 import org.json.JSONObject
 import org.json.JSONTokener
 
+
 class NetworkManager {
 
     companion object {
-        private val URL_DOMAIN = "http://188.166.190.55"
+
+        private val URL_DOMAIN_DEV = "http://188.166.190.55"
+        private val URL_DOMAIN_UAT = "http://175.176.222.91/api-ptt"
+        private val URL_DOMAIN_PROD = "http://175.176.222.90/api-ptt"
+
+        private val URL_DOMAIN = URL_DOMAIN_DEV
         private val URL_LOGIN = "$URL_DOMAIN/auth/login"
         private val URL_GET_DATA_MASTER = "$URL_DOMAIN/station/master"
         private val URL_CLOSE_SHIFT = "$URL_DOMAIN/close/shift"

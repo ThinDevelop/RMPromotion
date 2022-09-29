@@ -1,5 +1,6 @@
 package com.rm.promotion
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -54,7 +55,7 @@ class CalculatorActivity : AppCompatActivity() {
                             val qrcode = QRUtils.getQRCode(promotionId, promotionTotal)
                             val linkQR = qrcode.first
                             val qrText = qrcode.second
-                            print(templateModel, createdAt, productName, strPrice.toDouble().toCurrency(), linkQR, qrText, promotionCount.toString())
+                            RMPrintUtil.printPromotion(this@CalculatorActivity, templateModel, createdAt, productName, strPrice.toDouble().toCurrency(), linkQR, qrText, promotionCount.toString())
 
                             val slipDetail = SlipDetail(
                                 promotion_id = promotionId,
@@ -70,7 +71,12 @@ class CalculatorActivity : AppCompatActivity() {
                                 created_at = createdAt.time.toString(),
                                 detail = mutableListOf(slipDetail)
                             )
-
+                            val promotionSummary = PromotionSummary(
+                                promotion_name = calculatePrice.promotionName,
+                                promotion_code = promotionId,
+                                summary_slips = arrayListOf(SummarySlips(numbers = promotionCount.toString(), slips = "1"))
+                            )
+                            FileUtils.addSlip(this@CalculatorActivity, promotionSummary)
                             FileUtils.saveJsonFile(this@CalculatorActivity, slipModel)
                             this@CalculatorActivity.finish()
                         } else {
@@ -116,9 +122,8 @@ class CalculatorActivity : AppCompatActivity() {
             try {
                 promotionLimit = promotion.use_max.toInt()
             } catch (e : Exception) {
-                promotionLimit = 10
+                promotionLimit = 99
             }
-
 
             if (nowDate.after(startDate) && nowDate.before(endDate) && price >= startPrice) {
                 promotion.conditions?.let { conditions ->
@@ -155,10 +160,10 @@ class CalculatorActivity : AppCompatActivity() {
                             }
                         }
                         if (count > 0) {
-                            when (promotion.id.length) {
-                                1 -> promotionId = "00"+promotion.id
-                                2 -> promotionId = "0"+promotion.id
-                                3 -> promotionId = promotion.id
+                            when (promotion.code.length) {
+                                1 -> promotionId = "00"+promotion.code
+                                2 -> promotionId = "0"+promotion.code
+                                3 -> promotionId = promotion.code
                             }
                             promotionName = promotion.name
                             if(promotion.templates.size > 0) {
@@ -182,92 +187,5 @@ class CalculatorActivity : AppCompatActivity() {
             promotionTotal = if (count>promotionLimit) promotionLimit else count,
             templateModel = templateModel,
             promotionName = promotionName)
-    }
-
-    fun print(templateModel: TemplateModel,createdAt: Date, productName: String, price: String, qr: String, qrText: String, promotionTotal: String) {
-        Toast.makeText(this@CalculatorActivity, "printing", Toast.LENGTH_LONG).show()
-        val simpleDate = SimpleDateFormat(dd_MM_yyyy_HH_mm_ss)
-        val currentDate = simpleDate.format(createdAt)
-        val productName = arrayOf(productName, price)
-        val total = arrayOf("Total", price)
-        val cash = arrayOf("เงินสด/อื่นๆ", price)
-        val width = intArrayOf(1, 1)
-        val align = intArrayOf(0, 2)
-        val print_size = 6
-        val error_level = 3
-        SunmiPrintHelper.getInstance().setAlign(1)
-        SunmiPrintHelper.getInstance().printTitle("\n\n" +PreferenceUtils.stationName)
-        SunmiPrintHelper.getInstance().printSubtitle(PreferenceUtils.cashierName)
-        SunmiPrintHelper.getInstance().printSubtitle("วันที่ขาย#" + currentDate)
-        SunmiPrintHelper.getInstance().printSplit2()
-
-        SunmiPrintHelper.getInstance().printTable(productName, width, align)
-        SunmiPrintHelper.getInstance().printTable(total, width, align)
-        SunmiPrintHelper.getInstance().printTable(cash, width, align)
-        SunmiPrintHelper.getInstance().printSplit2()
-        SunmiPrintHelper.getInstance().printSubtitle("1365 Contact Center")
-        SunmiPrintHelper.getInstance().printSubtitle("==VAT INCLUDED==")
-        SunmiPrintHelper.getInstance().printSubtitle("THANK YOU AND WELCOME")
-        SunmiPrintHelper.getInstance().printSplit1()
-
-//        when (templateModel.line_type) {
-//            "0"->{SunmiPrintHelper.getInstance().printSplitCut(this@CalculatorActivity)}
-//            "1"->{SunmiPrintHelper.getInstance().printSplit1()}
-//            else->{}
-//        }
-
-        val details = templateModel.detail
-        if (details.size > 0) {
-            for (detail in details) {
-                var fontSize = 20f
-                if ("0".equals(detail.type)) {
-                    try {
-                        fontSize = detail.text_font.toFloat()
-                    } catch (e: Exception) {
-
-                    }
-                SunmiPrintHelper.getInstance().printWithSize(detail.text_detail, fontSize*1.8f)
-                }
-            }
-            SunmiPrintHelper.getInstance().printTitle("จำนวน $promotionTotal สิทธิ์")
-            SunmiPrintHelper.getInstance().printQr(qr, print_size, error_level)
-            SunmiPrintHelper.getInstance().printSubtitle(qrText)
-            SunmiPrintHelper.getInstance().setAlign(0)
-
-            for (detail in details) {
-                var fontSize = 20f
-                if ("1".equals(detail.type)) {
-                    try {
-                        fontSize = detail.text_font.toFloat()
-                    } catch (e: Exception) {
-
-                    }
-
-                    SunmiPrintHelper.getInstance().printWithSize(detail.text_detail, fontSize*1.5f)
-                }
-            }
-//            SunmiPrintHelper.getInstance().printText("ขั้นตอนการลุ้นโชค\n" +
-//                    "1. ใช้มือถือแสกน คิวอาร์โค้ด เพื่อลงทะเบียนลุ้น\n" +
-//                    "    โชค ตั้งแต่ 1 ต.ค. 65 - 31 ธ.ค. 65\n" +
-//                    "2. กรอกชื่อ-นามสกุล ที่อยู่ และเบอร์โทรศัพท์\n" +
-//                    "3. กด “ตกลง” เพื่อร่วมลุ้นโชคกับสถานีบริการ\n" +
-//                    "    น้ำมัน พีทีที สเตชั่น\n" +
-//                    "4. ใบเสร็จ 1 ใบสามารถแสกนเพื่อลงทะเบียนได้\n" +
-//                    "    ครั้งเดียว\n" +
-//                    "5. สอบถามข้อมูลเพิ่มเติมโทร. 1365 Contact Call\n" +
-//                    "    Center\n" +
-//                    "6. หากไม่สามารถแสกนคิวอาร์โค้ดได้ สามารถลง\n" +
-//                    "    ทะเบียนลุ้นโชคได้ที่ https://posoilluckytest.\n" +
-//                    "    pttor.com/Register และกรอกรหัสที่แสดงใต้\n" +
-//                    "    คิวอาร์โค้ด")
-
-
-        } else {
-            SunmiPrintHelper.getInstance().printTitle("จำนวน $promotionTotal สิทธิ์")
-            SunmiPrintHelper.getInstance().printQr(qr, print_size, error_level)
-            SunmiPrintHelper.getInstance().printSubtitle(qrText)
-        }
-        SunmiPrintHelper.getInstance().feedPaper()
-        SunmiPrintHelper.getInstance().feedPaper()
     }
 }

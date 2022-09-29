@@ -13,6 +13,6 @@ data class PromotionReport(
 )
 
 data class SummarySlips(
-    val numbers: String,
-    val slips: String
+    var numbers: String,
+    var slips: String
 )

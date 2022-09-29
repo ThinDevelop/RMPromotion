@@ -13,6 +13,7 @@ import com.rm.promotion.network.NetworkManager
 import com.rm.promotion.util.DialogUtils
 import com.rm.promotion.util.FileUtils
 import com.rm.promotion.util.PreferenceUtils
+import com.rm.promotion.util.RMPrintUtil
 import java.io.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -121,6 +122,10 @@ class MainActivity : AppCompatActivity() {
             .putOpt("shift", PreferenceUtils.preferenceKeyCurrentShift)
             .putOpt("close_type", "day")
 
+        val orgData = FileUtils.getSummaryDateJsonObjectFromFile(this@MainActivity)
+        val summaryModel = Gson().fromJson(orgData.toString(), SummaryDate::class.java)
+        RMPrintUtil.printReportDay(this@MainActivity, summaryModel)
+        FileUtils.deleteSummaryDay(this@MainActivity)
         NetworkManager.closeShift(newObj, object : NetworkManager.Companion.NetworkLisener<CloseShiftResponseModel> {
             override fun onResponse(response: CloseShiftResponseModel) {
                 dialog.dismiss()
@@ -165,6 +170,10 @@ class MainActivity : AppCompatActivity() {
             .putOpt("shift", PreferenceUtils.preferenceKeyCurrentShift)
             .putOpt("close_type", "shift")
 
+        val orgData = FileUtils.getSummaryShiftJsonObjectFromFile(this@MainActivity)
+        val summaryModel = Gson().fromJson(orgData.toString(), SummaryShift::class.java)
+        RMPrintUtil.printReportShift(this@MainActivity, summaryModel)
+        FileUtils.deleteSummaryShift(this@MainActivity)
         NetworkManager.closeShift(newObj, object : NetworkManager.Companion.NetworkLisener<CloseShiftResponseModel> {
             override fun onResponse(response: CloseShiftResponseModel) {
                 dialog.dismiss()
