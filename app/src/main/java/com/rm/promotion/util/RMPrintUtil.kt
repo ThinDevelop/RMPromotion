@@ -34,15 +34,18 @@ class RMPrintUtil {
             val header = arrayOf(context.getString(R.string.header_promotion), context.getString(R.string.header_summary))
             SunmiPrintHelper.getInstance().printTable(header, width, align, false)
             SunmiPrintHelper.getInstance().setAlign(0)
-            for (promotion in promotions) {
-                val promotionId = promotion.promotion_code
-                val promotionName = promotion.promotion_name
-                SunmiPrintHelper.getInstance().printSubtitle("$promotionName รหัส $promotionId")
-                for (slip in promotion.summary_slips) {
-                    val slipNumber = slip.slips
-                    val promotionNumber = slip.numbers
-                    val slipDetail = arrayOf("จำนวน $promotionNumber สิทธิ์", "พิมพ์ $slipNumber ใบ")
-                    SunmiPrintHelper.getInstance().printTable(slipDetail, width, align,false)
+            promotions?.let {
+                for (promotion in promotions) {
+                    val promotionId = promotion.promotion_code
+                    val promotionName = promotion.promotion_name
+                    SunmiPrintHelper.getInstance().printSubtitle("$promotionName รหัส $promotionId")
+                    for (slip in promotion.summary_slips) {
+                        val slipNumber = slip.slips
+                        val promotionNumber = slip.numbers
+                        val slipDetail =
+                            arrayOf("จำนวน $promotionNumber สิทธิ์", "พิมพ์ $slipNumber ใบ")
+                        SunmiPrintHelper.getInstance().printTable(slipDetail, width, align, false)
+                    }
                 }
             }
 
@@ -83,18 +86,19 @@ class RMPrintUtil {
             val header = arrayOf(context.getString(R.string.header_promotion), context.getString(R.string.header_summary))
             SunmiPrintHelper.getInstance().printTable(header, width, align, false)
             SunmiPrintHelper.getInstance().setAlign(0)
-            for (promotion in promotions) {
-                val promotionId = promotion.promotion_code
-                val promotionName = promotion.promotion_name
-                SunmiPrintHelper.getInstance().printSubtitle("$promotionName รหัส $promotionId")
-                for (slip in promotion.summary_slips) {
-                    val slipNumber = slip.slips
-                    val promotionNumber = slip.numbers
-                    val slipDetail = arrayOf("จำนวน $promotionNumber สิทธิ์", "พิมพ์ $slipNumber ใบ")
-                    SunmiPrintHelper.getInstance().printTable(slipDetail, width, align,false)
+            promotions?.let {
+                for (promotion in promotions) {
+                    val promotionId = promotion.promotion_code
+                    val promotionName = promotion.promotion_name
+                    SunmiPrintHelper.getInstance().printSubtitle("$promotionName รหัส $promotionId")
+                    for (slip in promotion.summary_slips) {
+                        val slipNumber = slip.slips
+                        val promotionNumber = slip.numbers
+                        val slipDetail = arrayOf("จำนวน $promotionNumber สิทธิ์", "พิมพ์ $slipNumber ใบ")
+                        SunmiPrintHelper.getInstance().printTable(slipDetail, width, align,false)
+                    }
                 }
             }
-
             SunmiPrintHelper.getInstance().setAlign(1)
             SunmiPrintHelper.getInstance().printSplit2()
             SunmiPrintHelper.getInstance().printSubtitle("1365 Contact Center")
@@ -197,11 +201,12 @@ class RMPrintUtil {
                         }
                         when (headLineCount) {
                             1,2,3 -> fontSize = 14f
+                            else -> fontSize = 9f
                         }
                         SunmiPrintHelper.getInstance().printWithSize(detail.text_detail, fontSize*1.8f)
                     }
                 }
-                SunmiPrintHelper.getInstance().printTitle("จำนวน $promotionTotal สิทธิ์")
+                SunmiPrintHelper.getInstance().printTitle("\nจำนวน $promotionTotal สิทธิ์")
                 SunmiPrintHelper.getInstance().printQr(qr, print_size, error_level)
                 SunmiPrintHelper.getInstance().printSubtitle(qrText)
                 SunmiPrintHelper.getInstance().setAlign(0)
@@ -230,6 +235,7 @@ class RMPrintUtil {
                 SunmiPrintHelper.getInstance().printQr(qr, print_size, error_level)
                 SunmiPrintHelper.getInstance().printSubtitle(qrText)
             }
+            SunmiPrintHelper.getInstance().feedPaper()
             SunmiPrintHelper.getInstance().feedPaper()
         }
     }
