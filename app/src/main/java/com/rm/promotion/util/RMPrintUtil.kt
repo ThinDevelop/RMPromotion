@@ -1,6 +1,7 @@
 package com.rm.promotion.util
 
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import com.rm.promotion.R
 import com.rm.promotion.model.*
@@ -13,6 +14,9 @@ class RMPrintUtil {
     companion object {
 
         fun printReportDay(context: Context, reportModel: SummaryDate) {
+            if (reportModel.summary_date == null) {
+                reportModel.summary_date = PreferenceUtils.preferenceKeyBusinessDate
+            }
             val summaryDate = reportModel.summary_date
             val promotions = reportModel.promotion
             var shift = ""
@@ -59,6 +63,12 @@ class RMPrintUtil {
 
 
         fun printReportShift(context: Context, reportModel: SummaryShift) {
+            if (reportModel.summary_date == null) {
+                reportModel.summary_date = PreferenceUtils.preferenceKeyBusinessDate
+            }
+            if (reportModel.shift == null) {
+                reportModel.shift = PreferenceUtils.preferenceKeyCurrentShift
+            }
             val summaryDate = reportModel.summary_date
             val promotions = reportModel.promotion
             var shift = reportModel.shift

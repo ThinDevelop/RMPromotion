@@ -1,7 +1,7 @@
 package com.rm.promotion.model
 
 data class SummaryShift(
-    var summary_date: String,
+    var summary_date: String?,
     var shift: String?,
     var promotion: MutableList<PromotionSummary>
 )

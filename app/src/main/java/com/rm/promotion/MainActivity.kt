@@ -2,11 +2,11 @@ package com.rm.promotion
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
 import com.rm.promotion.adapter.ProductAdapter
-import com.rm.promotion.app.RmPromotionApplication
 import com.rm.promotion.databinding.ActivityMainBinding
 import com.rm.promotion.model.*
 import com.rm.promotion.network.NetworkManager
@@ -14,7 +14,7 @@ import com.rm.promotion.util.DialogUtils
 import com.rm.promotion.util.FileUtils
 import com.rm.promotion.util.PreferenceUtils
 import com.rm.promotion.util.RMPrintUtil
-import java.io.*
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -174,6 +174,8 @@ class MainActivity : AppCompatActivity() {
         val summaryModel = Gson().fromJson(orgData.toString(), SummaryShift::class.java)
         RMPrintUtil.printReportShift(this@MainActivity, summaryModel)
         FileUtils.deleteSummaryShift(this@MainActivity)
+        val file = File(this@MainActivity.getExternalFilesDir("data"), "data_summary_shift.json")
+        Log.d("delete file","file exists : "+ file.exists())
         NetworkManager.closeShift(newObj, object : NetworkManager.Companion.NetworkLisener<CloseShiftResponseModel> {
             override fun onResponse(response: CloseShiftResponseModel) {
                 dialog.dismiss()

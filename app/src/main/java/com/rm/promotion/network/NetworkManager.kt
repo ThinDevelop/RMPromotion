@@ -289,6 +289,7 @@ class NetworkManager {
                 .addHeaders("Accept", "application/json")
                 .addQueryParameter("summary_date", summaryDate)
                 .addQueryParameter("shift", shift)
+                .addQueryParameter("mobile_pos_id", android.os.Build.SERIAL)
                 .setTag("login")
                 .setPriority(Priority.HIGH)
                 .build()
