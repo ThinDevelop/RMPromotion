@@ -179,7 +179,7 @@ class RMPrintUtil {
             SunmiPrintHelper.getInstance().setAlign(1)
             SunmiPrintHelper.getInstance().printTitle("\n\n" +PreferenceUtils.stationName)
             SunmiPrintHelper.getInstance().printSubtitle(PreferenceUtils.cashierName)
-            SunmiPrintHelper.getInstance().printSubtitle("วันที่ขาย#" + PreferenceUtils.getBusinessDate())//currentDate)
+            SunmiPrintHelper.getInstance().printSubtitle("วันที่ขาย#" + currentDate)
             SunmiPrintHelper.getInstance().printSplit2()
 
             SunmiPrintHelper.getInstance().printTable(productName, width, align)
