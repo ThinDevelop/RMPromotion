@@ -9,6 +9,7 @@ class QRUtils {
             if (promotionTotal.length > 2) return Pair("","")
             val domain_uat = "https://posoillucktest.pttor.com/Register?data="
             val domain_prod = "https://posoillucktest.pttor.com/Register?data="
+            val domain = domain_prod
 
             var qrCode = ""
             var qrcodeText = ""
@@ -33,7 +34,7 @@ class QRUtils {
                 qrcodeText = result.resultEncryptData.qrcodeText
                 qrCode = result.resultEncryptData.qrcode
             }
-            return Pair(domain_uat+qrCode, qrcodeText)
+            return Pair(domain+qrCode, qrcodeText)
         }
 
         private fun getPromotionRunning(): String {
