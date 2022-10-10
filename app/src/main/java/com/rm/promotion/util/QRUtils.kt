@@ -8,7 +8,7 @@ class QRUtils {
         fun getQRCode(promotionId: String, promotionTotal: String): Pair<String, String> {
             if (promotionTotal.length > 2) return Pair("","")
             val domain_uat = "https://posoillucktest.pttor.com/Register?data="
-            val domain_prod = "https://posoillucktest.pttor.com/Register?data="
+            val domain_prod = "https://pttstationluckydraw.pttor.com/Register?data="
             val domain = domain_prod
 
             var qrCode = ""
