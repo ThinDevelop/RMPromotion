@@ -4,12 +4,12 @@ plugins {
 }
 
 android {
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.rm.promotion"
         minSdk 24
-        targetSdk 32
+        targetSdk 33
         versionCode 10
         versionName "1.0.13"
 
@@ -61,18 +61,19 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
 
-    implementation 'androidx.core:core-ktx:1.7.0'
-    implementation 'androidx.appcompat:appcompat:1.3.0'
-    implementation 'com.google.android.material:material:1.4.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'androidx.core:core-ktx:1.9.0'
+    implementation 'androidx.appcompat:appcompat:1.5.1'
+    implementation 'com.google.android.material:material:1.6.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
     implementation 'com.amitshekhar.android:android-networking:1.0.2'
+    implementation 'com.google.code.gson:gson:2.9.1'
 
     implementation 'com.sunmi:sunmiui:1.1.27'
-    implementation 'com.sunmi:printerlibrary:1.0.13'
+    implementation 'com.sunmi:printerlibrary:1.0.18'
 
     implementation 'com.journeyapps:zxing-android-embedded:4.2.0'
     implementation 'me.dm7.barcodescanner:zxing:1.9'
