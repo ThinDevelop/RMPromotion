@@ -135,20 +135,21 @@ public class ESCUtil {
             buffer.write(new byte[]{0x1D,0x66,0x01,0x1D,0x48,(byte)textposition,
                     0x1D,0x77,(byte)width,0x1D,0x68,(byte)height,0x0A});
 
-            byte[] barcode;
+            byte[] barcode ;
             if(symbology == 10){
                 barcode = BytesUtil.getBytesFromDecString(data);
             }else{
                 barcode = data.getBytes("GB18030");
             }
 
-
-            if(symbology > 7){
-                buffer.write(new byte[]{0x1D,0x6B,0x49,(byte)(barcode.length+2),0x7B, (byte) (0x41+symbology-8)});
-            }else{
-                buffer.write(new byte[]{0x1D,0x6B,(byte)(symbology + 0x41),(byte)barcode.length});
+            if (barcode != null) {
+                if (symbology > 7) {
+                    buffer.write(new byte[]{0x1D, 0x6B, 0x49, (byte) (barcode.length + 2), 0x7B, (byte) (0x41 + symbology - 8)});
+                } else {
+                    buffer.write(new byte[]{0x1D, 0x6B, (byte) (symbology + 0x41), (byte) barcode.length});
+                }
+                buffer.write(barcode);
             }
-            buffer.write(barcode);
         }catch(Exception e){
             e.printStackTrace();
         }
