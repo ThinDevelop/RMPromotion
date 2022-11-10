@@ -21,9 +21,9 @@ class NetworkManager {
         private val URL_DOMAIN_UAT = "http://175.176.222.91/api-ptt"
         private val URL_DOMAIN_PROD = "http://175.176.222.90/api-ptt"
 
-        private val URL_DOMAIN = URL_DOMAIN_PROD
+        private val URL_DOMAIN = URL_DOMAIN_DEV
         private val URL_LOGIN = "$URL_DOMAIN/auth/login"
-        private val URL_GET_DATA_MASTER = "$URL_DOMAIN/station/master"
+        private val URL_GET_DATA_MASTER = "$URL_DOMAIN/v2/station/master"
         private val URL_CLOSE_SHIFT = "$URL_DOMAIN/close/shift"
         private val URL_CLOSE_DATE = "$URL_DOMAIN/close/date"
         private val URL_REPORT = "$URL_DOMAIN/slip"

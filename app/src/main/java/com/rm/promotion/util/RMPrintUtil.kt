@@ -28,14 +28,19 @@ class RMPrintUtil {
             val width = intArrayOf(1, 1)
             val align = intArrayOf(0, 2)
             SunmiPrintHelper.getInstance().setAlign(1)
-            SunmiPrintHelper.getInstance().printTitle("\n\n" +PreferenceUtils.stationName)
-            SunmiPrintHelper.getInstance().printSubtitle("Station ID "+ PreferenceUtils.stationId)
-            SunmiPrintHelper.getInstance().printSubtitle("Cashier Name "+ PreferenceUtils.cashierName)
-            SunmiPrintHelper.getInstance().printSubtitle("Cashier ID "+ PreferenceUtils.currentUserId)
+            SunmiPrintHelper.getInstance().printTitle("\n\n" + PreferenceUtils.stationName)
+            SunmiPrintHelper.getInstance().printSubtitle("Station ID " + PreferenceUtils.stationId)
+            SunmiPrintHelper.getInstance()
+                .printSubtitle("Cashier Name " + PreferenceUtils.cashierName)
+            SunmiPrintHelper.getInstance()
+                .printSubtitle("Cashier ID " + PreferenceUtils.currentUserId)
             SunmiPrintHelper.getInstance().printSubtitle("ใบสรุปยอดวันที่#$date $shift")
             SunmiPrintHelper.getInstance().printSplit2()
 
-            val header = arrayOf(context.getString(R.string.header_promotion), context.getString(R.string.header_summary))
+            val header = arrayOf(
+                context.getString(R.string.header_promotion),
+                context.getString(R.string.header_summary)
+            )
             SunmiPrintHelper.getInstance().printTable(header, width, align, false)
             SunmiPrintHelper.getInstance().setAlign(0)
             promotions?.let {
@@ -86,14 +91,19 @@ class RMPrintUtil {
             val width = intArrayOf(1, 1)
             val align = intArrayOf(0, 2)
             SunmiPrintHelper.getInstance().setAlign(1)
-            SunmiPrintHelper.getInstance().printTitle("\n\n" +PreferenceUtils.stationName)
-            SunmiPrintHelper.getInstance().printSubtitle("Station ID "+ PreferenceUtils.stationId)
-            SunmiPrintHelper.getInstance().printSubtitle("Cashier Name "+ PreferenceUtils.cashierName)
-            SunmiPrintHelper.getInstance().printSubtitle("Cashier ID "+ PreferenceUtils.currentUserId)
+            SunmiPrintHelper.getInstance().printTitle("\n\n" + PreferenceUtils.stationName)
+            SunmiPrintHelper.getInstance().printSubtitle("Station ID " + PreferenceUtils.stationId)
+            SunmiPrintHelper.getInstance()
+                .printSubtitle("Cashier Name " + PreferenceUtils.cashierName)
+            SunmiPrintHelper.getInstance()
+                .printSubtitle("Cashier ID " + PreferenceUtils.currentUserId)
             SunmiPrintHelper.getInstance().printSubtitle("ใบสรุปยอดวันที่#$date $shift")
             SunmiPrintHelper.getInstance().printSplit2()
 
-            val header = arrayOf(context.getString(R.string.header_promotion), context.getString(R.string.header_summary))
+            val header = arrayOf(
+                context.getString(R.string.header_promotion),
+                context.getString(R.string.header_summary)
+            )
             SunmiPrintHelper.getInstance().printTable(header, width, align, false)
             SunmiPrintHelper.getInstance().setAlign(0)
             promotions?.let {
@@ -104,8 +114,9 @@ class RMPrintUtil {
                     for (slip in promotion.summary_slips) {
                         val slipNumber = slip.slips
                         val promotionNumber = slip.numbers
-                        val slipDetail = arrayOf("จำนวน $promotionNumber สิทธิ์", "พิมพ์ $slipNumber ใบ")
-                        SunmiPrintHelper.getInstance().printTable(slipDetail, width, align,false)
+                        val slipDetail =
+                            arrayOf("จำนวน $promotionNumber สิทธิ์", "พิมพ์ $slipNumber ใบ")
+                        SunmiPrintHelper.getInstance().printTable(slipDetail, width, align, false)
                     }
                 }
             }
@@ -135,14 +146,19 @@ class RMPrintUtil {
             val width = intArrayOf(1, 1)
             val align = intArrayOf(0, 2)
             SunmiPrintHelper.getInstance().setAlign(1)
-            SunmiPrintHelper.getInstance().printTitle("\n\n" +PreferenceUtils.stationName)
-            SunmiPrintHelper.getInstance().printSubtitle("Station ID "+ PreferenceUtils.stationId)
-            SunmiPrintHelper.getInstance().printSubtitle("Cashier Name "+ PreferenceUtils.cashierName)
-            SunmiPrintHelper.getInstance().printSubtitle("Cashier ID "+ PreferenceUtils.currentUserId)
+            SunmiPrintHelper.getInstance().printTitle("\n\n" + PreferenceUtils.stationName)
+            SunmiPrintHelper.getInstance().printSubtitle("Station ID " + PreferenceUtils.stationId)
+            SunmiPrintHelper.getInstance()
+                .printSubtitle("Cashier Name " + PreferenceUtils.cashierName)
+            SunmiPrintHelper.getInstance()
+                .printSubtitle("Cashier ID " + PreferenceUtils.currentUserId)
             SunmiPrintHelper.getInstance().printSubtitle("ใบสรุปยอดวันที่#$date $shift")
             SunmiPrintHelper.getInstance().printSplit2()
 
-            val header = arrayOf(context.getString(R.string.header_promotion), context.getString(R.string.header_summary))
+            val header = arrayOf(
+                context.getString(R.string.header_promotion),
+                context.getString(R.string.header_summary)
+            )
             SunmiPrintHelper.getInstance().printTable(header, width, align, false)
             SunmiPrintHelper.getInstance().setAlign(0)
             for (promotion in promotions) {
@@ -152,8 +168,9 @@ class RMPrintUtil {
                 for (slip in promotion.summary_slips) {
                     val slipNumber = slip.slips
                     val promotionNumber = slip.numbers
-                    val slipDetail = arrayOf("จำนวน $promotionNumber สิทธิ์", "พิมพ์ $slipNumber ใบ")
-                    SunmiPrintHelper.getInstance().printTable(slipDetail, width, align,false)
+                    val slipDetail =
+                        arrayOf("จำนวน $promotionNumber สิทธิ์", "พิมพ์ $slipNumber ใบ")
+                    SunmiPrintHelper.getInstance().printTable(slipDetail, width, align, false)
                 }
             }
 
@@ -166,7 +183,16 @@ class RMPrintUtil {
         }
 
 
-        fun printPromotion(context: Context, templateModel: TemplateModel, createdAt: Date, productName: String, price: String, qr: String, qrText: String, promotionTotal: String) {
+        fun printPromotion(
+            context: Context,
+            templateModels: MutableList<TemplateModel>,
+            createdAt: Date,
+            productName: String,
+            price: String,
+            qr: String,
+            qrText: String,
+            promotionTotal: String
+        ) {
             val simpleDate = SimpleDateFormat(DateFormatConstant.dd_MM_yyyy_HH_mm_ss)
             val currentDate = simpleDate.format(createdAt)
             val productName = arrayOf(productName, price)
@@ -177,7 +203,7 @@ class RMPrintUtil {
             val print_size = 6
             val error_level = 3
             SunmiPrintHelper.getInstance().setAlign(1)
-            SunmiPrintHelper.getInstance().printTitle("\n\n" +PreferenceUtils.stationName)
+            SunmiPrintHelper.getInstance().printTitle("\n\n" + PreferenceUtils.stationName)
             SunmiPrintHelper.getInstance().printSubtitle(PreferenceUtils.cashierName)
             SunmiPrintHelper.getInstance().printSubtitle("วันที่ขาย#" + currentDate)
             SunmiPrintHelper.getInstance().printSplit2()
@@ -190,60 +216,200 @@ class RMPrintUtil {
             SunmiPrintHelper.getInstance().printSubtitle("==VAT INCLUDED==")
             SunmiPrintHelper.getInstance().printSubtitle("THANK YOU AND WELCOME")
 
-            when (templateModel.line_type) {
-                "0"->{SunmiPrintHelper.getInstance().printSplitCut(context)}
-                "1"->{SunmiPrintHelper.getInstance().printSplit1()}
-                else->{SunmiPrintHelper.getInstance().printSplitSpace()}
+            templateModels.forEach { templateModel ->
+                when (templateModel.line_type) {
+                    "0" -> {
+                        SunmiPrintHelper.getInstance().printSplitCut(context)
+                    }
+                    "1" -> {
+                        SunmiPrintHelper.getInstance().printSplit1()
+                    }
+                    else -> {
+                        SunmiPrintHelper.getInstance().printSplitSpace()
+                    }
+                }
+                SunmiPrintHelper.getInstance().setAlign(1)
+
+                val details = templateModel.detail
+                if (details.size > 0) {
+                    for (detail in details) {
+                        var fontSize = 20f
+                        if ("0".equals(detail.type)) {
+                            fontSize = detail.text_font.toFloat()
+                            SunmiPrintHelper.getInstance()
+                                .printWithSize(detail.text_detail, fontSize * 1.8f)
+                        }
+                    }
+                    SunmiPrintHelper.getInstance().printTitle("\nจำนวน $promotionTotal สิทธิ์")
+                    when (templateModel.type) {
+                        "0" -> {
+                            if (templateModel.type_detail.isNotEmpty()) {
+                                SunmiPrintHelper.getInstance()
+                                    .printQr(templateModel.type_detail, print_size, error_level)
+                            } else {
+                                SunmiPrintHelper.getInstance().printQr(qr, print_size, error_level)
+                            }
+                            SunmiPrintHelper.getInstance().printSubtitle(qrText)
+                        }
+                        "1" -> {
+                            if (templateModel.type_detail.isNotEmpty()) {
+                                SunmiPrintHelper.getInstance()
+                                    .printBarcode(templateModel.type_detail)
+                            } else {
+                                SunmiPrintHelper.getInstance().printBarcode("barcode dynamic")
+                            }
+                        }
+                        "2" -> {
+                            if (templateModel.type_detail.isNotEmpty()) {
+                                SunmiPrintHelper.getInstance().printTitle(templateModel.type_detail)
+                            }
+                        }
+                    }
+                    SunmiPrintHelper.getInstance().printText("\n")
+                    SunmiPrintHelper.getInstance().setAlign(0)
+
+                    for (detail in details) {
+                        var fontSize = 20f
+                        if ("1".equals(detail.type)) {
+                            fontSize = detail.text_font.toFloat()
+                            SunmiPrintHelper.getInstance()
+                                .printWithSize(detail.text_detail, fontSize * 1.5f)
+                        }
+                    }
+                } else {
+                    SunmiPrintHelper.getInstance().printTitle("จำนวน $promotionTotal สิทธิ์")
+                    when (templateModel.type) {
+                        "0" -> {
+                            if (templateModel.type_detail.isNotEmpty()) {
+                                SunmiPrintHelper.getInstance()
+                                    .printQr(templateModel.type_detail, print_size, error_level)
+                            } else {
+                                SunmiPrintHelper.getInstance().printQr(qr, print_size, error_level)
+                            }
+                            SunmiPrintHelper.getInstance().printSubtitle(qrText)
+                        }
+                        "1" -> {
+                            if (templateModel.type_detail.isNotEmpty()) {
+                                SunmiPrintHelper.getInstance()
+                                    .printBarcode(templateModel.type_detail)
+                            } else {
+                                SunmiPrintHelper.getInstance().printBarcode("barcode dynamic")
+                            }
+                        }
+                        "2" -> {
+                            if (templateModel.type_detail.isNotEmpty()) {
+                                SunmiPrintHelper.getInstance().printTitle(templateModel.type_detail)
+                            }
+                        }
+                    }
+                }
             }
+            SunmiPrintHelper.getInstance().feedPaper()
+            SunmiPrintHelper.getInstance().feedPaper()
+        }
+
+        fun printChildPromotion(
+            context: Context,
+            templateModels: MutableList<TemplateModel>,
+            createdAt: Date,
+            productName: String,
+            price: String,
+            qr: String,
+            qrText: String,
+            promotionTotal: String
+        ) {
+            val simpleDate = SimpleDateFormat(DateFormatConstant.dd_MM_yyyy_HH_mm_ss)
+            val print_size = 6
+            val error_level = 3
             SunmiPrintHelper.getInstance().setAlign(1)
-
-            val details = templateModel.detail
-            if (details.size > 0) {
-                var headLineCount = 0
-                for (detail in details) {
-                    var fontSize = 20f
-                    if ("0".equals(detail.type)) {
-                        headLineCount++
-                        try {
-                            fontSize = detail.text_font.toFloat()
-                        } catch (e: Exception) {
-
-                        }
-                        when (headLineCount) {
-                            1,2,3 -> fontSize = 14f
-                            else -> fontSize = 9f
-                        }
-                        SunmiPrintHelper.getInstance().printWithSize(detail.text_detail, fontSize*1.8f)
+            templateModels.forEach { templateModel ->
+                when (templateModel.line_type) {
+                    "0" -> {
+                        SunmiPrintHelper.getInstance().printSplitCut(context)
+                    }
+                    "1" -> {
+                        SunmiPrintHelper.getInstance().printSplit1()
+                    }
+                    else -> {
+                        SunmiPrintHelper.getInstance().printSplitSpace()
                     }
                 }
-                SunmiPrintHelper.getInstance().printTitle("\nจำนวน $promotionTotal สิทธิ์")
-                SunmiPrintHelper.getInstance().printQr(qr, print_size, error_level)
-                SunmiPrintHelper.getInstance().printSubtitle(qrText)
-                SunmiPrintHelper.getInstance().setAlign(0)
+                SunmiPrintHelper.getInstance().setAlign(1)
 
-                var footLineCount = 0
-                for (detail in details) {
-                    var fontSize = 20f
-                    if ("1".equals(detail.type)) {
-                        footLineCount++
-                        try {
+                val details = templateModel.detail
+                if (details.size > 0) {
+                    for (detail in details) {
+                        var fontSize = 20f
+                        if ("0".equals(detail.type)) {
                             fontSize = detail.text_font.toFloat()
-                        } catch (e: Exception) {
-
+                            SunmiPrintHelper.getInstance()
+                                .printWithSize(detail.text_detail, fontSize * 1.8f)
                         }
-
-                        when (footLineCount) {
-                            1 -> fontSize = 14f
-                            else -> fontSize = 9f
+                    }
+                    SunmiPrintHelper.getInstance().printTitle("\nจำนวน $promotionTotal สิทธิ์")
+                    when (templateModel.type) {
+                        "0" -> {
+                            if (templateModel.type_detail.isNotEmpty()) {
+                                SunmiPrintHelper.getInstance()
+                                    .printQr(templateModel.type_detail, print_size, error_level)
+                            } else {
+                                SunmiPrintHelper.getInstance().printQr(qr, print_size, error_level)
+                            }
+                            SunmiPrintHelper.getInstance().printSubtitle(qrText)
                         }
+                        "1" -> {
+                            if (templateModel.type_detail.isNotEmpty()) {
+                                SunmiPrintHelper.getInstance()
+                                    .printBarcode(templateModel.type_detail)
+                            } else {
+                                SunmiPrintHelper.getInstance().printBarcode("barcode dynamic")
+                            }
+                        }
+                        "2" -> {
+                            if (templateModel.type_detail.isNotEmpty()) {
+                                SunmiPrintHelper.getInstance().printTitle(templateModel.type_detail)
+                            }
+                        }
+                    }
+                    SunmiPrintHelper.getInstance().printText("\n")
+                    SunmiPrintHelper.getInstance().setAlign(0)
 
-                        SunmiPrintHelper.getInstance().printWithSize(detail.text_detail, fontSize*1.5f)
+                    for (detail in details) {
+                        var fontSize = 20f
+                        if ("1".equals(detail.type)) {
+                            fontSize = detail.text_font.toFloat()
+                            SunmiPrintHelper.getInstance()
+                                .printWithSize(detail.text_detail, fontSize * 1.5f)
+                        }
+                    }
+                } else {
+                    SunmiPrintHelper.getInstance().printTitle("จำนวน $promotionTotal สิทธิ์")
+
+                    when (templateModel.type) {
+                        "0" -> {
+                            if (templateModel.type_detail.isNotEmpty()) {
+                                SunmiPrintHelper.getInstance()
+                                    .printQr(templateModel.type_detail, print_size, error_level)
+                            } else {
+                                SunmiPrintHelper.getInstance().printQr(qr, print_size, error_level)
+                            }
+                            SunmiPrintHelper.getInstance().printSubtitle(qrText)
+                        }
+                        "1" -> {
+                            if (templateModel.type_detail.isNotEmpty()) {
+                                SunmiPrintHelper.getInstance()
+                                    .printBarcode(templateModel.type_detail)
+                            } else {
+                                SunmiPrintHelper.getInstance().printBarcode("barcode dynamic")
+                            }
+                        }
+                        "2" -> {
+                            if (templateModel.type_detail.isNotEmpty()) {
+                                SunmiPrintHelper.getInstance().printTitle(templateModel.type_detail)
+                            }
+                        }
                     }
                 }
-            } else {
-                SunmiPrintHelper.getInstance().printTitle("จำนวน $promotionTotal สิทธิ์")
-                SunmiPrintHelper.getInstance().printQr(qr, print_size, error_level)
-                SunmiPrintHelper.getInstance().printSubtitle(qrText)
             }
             SunmiPrintHelper.getInstance().feedPaper()
             SunmiPrintHelper.getInstance().feedPaper()

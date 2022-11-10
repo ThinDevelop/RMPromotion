@@ -11,8 +11,9 @@ data class PromotionModel(
     val end_price: String,
     val use_num: String = "1",
     val use_max: String = "99",
-    val priority: String,
+    val priority: Int,
     val child_id: String,
+    val child_promotion: PromotionModel?,
     val conditions: MutableList<ConditionModel>?,
     val templates: MutableList<TemplateModel>
 )

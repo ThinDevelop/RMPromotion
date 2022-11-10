@@ -6,6 +6,7 @@ import android.os.RemoteException;
 import android.widget.Toast;
 
 import com.rm.promotion.R;
+import com.rm.promotion.model.BarcodeEncodeType;
 import com.sunmi.peripheral.printer.ExceptionConst;
 import com.sunmi.peripheral.printer.InnerLcdCallback;
 import com.sunmi.peripheral.printer.InnerPrinterCallback;
@@ -376,6 +377,10 @@ public class SunmiPrintHelper {
         } catch (RemoteException e) {
             e.printStackTrace();
         }
+    }
+
+    public void printBarcode(String data) throws RemoteException {
+        sunmiPrinterService.printBarCode(data, BarcodeEncodeType.CODE93.getId(), 120, 2, 2, null);
     }
 
     public void printTitle(String text) {
