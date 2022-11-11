@@ -159,7 +159,9 @@ class LoginActivity : AppCompatActivity() {
                 if (!response.promotion_sync || PreferenceUtils.promotion.isEmpty()) {
                     getMaster()
                 } else {
-                    toMainActivity()
+                    getMaster()
+
+//                    toMainActivity()
                 }
             }
 

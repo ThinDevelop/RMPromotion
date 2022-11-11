@@ -55,8 +55,9 @@ class CalculatorActivity : AppCompatActivity() {
                             val calculatePrice = calculatePrice(strPrice)
                             val promotionId = calculatePrice.promotionId
                             val promotionCount = calculatePrice.promotionTotal
-                            val templateModel = calculatePrice.templateModel
+                            val templateModels = calculatePrice.templateModel
                             val childPromotion = calculatePrice.childPromotion
+                            val slipDetails = mutableListOf<SlipDetail>()
                             val createdAt = Date()
                             if (promotionCount > 0) {
 
@@ -67,7 +68,7 @@ class CalculatorActivity : AppCompatActivity() {
                                 val qrText = qrcode.second
                                 RMPrintUtil.printPromotion(
                                     this@CalculatorActivity,
-                                    templateModel,
+                                    templateModels,
                                     createdAt,
                                     productName,
                                     strPrice.toDouble().toCurrency(),
@@ -76,33 +77,42 @@ class CalculatorActivity : AppCompatActivity() {
                                     promotionCount.toString()
                                 )
 
-                                val calChildPromotion = calculatePriceOfChildPromotion(strPrice, childPromotion)
+                                val calChildPromotion =
+                                    calculatePriceOfChildPromotion(strPrice, childPromotion)
                                 val calPromotionId = calChildPromotion.promotionId
                                 val calPromotionCount = calChildPromotion.promotionTotal
                                 val calTemplateModel = calChildPromotion.templateModel
-                                val childPromotionTotal =
-                                    if (calPromotionCount <= 9) "0$calPromotionCount" else calPromotionCount.toString()
+                                if (calPromotionCount > 0) {
+                                    val childPromotionTotal =
+                                        if (calPromotionCount <= 9) "0$calPromotionCount" else calPromotionCount.toString()
 
-                                val childQrcode = QRUtils.getQRCode(calPromotionId, childPromotionTotal)
-                                val childLinkQR = childQrcode.first
-                                val childQrText = childQrcode.second
+                                    val childQrcode =
+                                        QRUtils.getQRCode(calPromotionId, childPromotionTotal)
+                                    val childLinkQR = childQrcode.first
+                                    val childQrText = childQrcode.second
 
-                                RMPrintUtil.printChildPromotion(
-                                    this@CalculatorActivity,
-                                    calTemplateModel,
-                                    createdAt,
-                                    productName,
-                                    strPrice.toDouble().toCurrency(),
-                                    childLinkQR,
-                                    childQrText,
-                                    calPromotionCount.toString()
-                                )
+                                    RMPrintUtil.printChildPromotion(
+                                        this@CalculatorActivity,
+                                        calTemplateModel,
+                                        createdAt,
+                                        productName,
+                                        strPrice.toDouble().toCurrency(),
+                                        childLinkQR,
+                                        childQrText,
+                                        calPromotionCount.toString()
+                                    )
+                                }
 
-                                val slipDetail = SlipDetail(
-                                    promotion_id = promotionId,
-                                    template_id = templateModel.first().id,
-                                    number = promotionCount.toString()
-                                )
+                                templateModels.forEach {
+                                    slipDetails.add(
+                                        SlipDetail(
+                                            promotion_id = promotionId,
+                                            template_id = it.id,
+                                            number = promotionCount.toString()
+                                        )
+                                    )
+                                }
+
                                 val slipModel = SlipModel(
                                     login_time = PreferenceUtils.loginTime,
                                     promotion_id = promotionId,
@@ -110,7 +120,7 @@ class CalculatorActivity : AppCompatActivity() {
                                     price = strPrice,
                                     number = promotionCount.toString(),
                                     created_at = createdAt.time.toString(),
-                                    detail = mutableListOf(slipDetail)
+                                    detail = slipDetails
                                 )
                                 val promotionSummary = PromotionSummary(
                                     promotion_name = calculatePrice.promotionName,
@@ -233,7 +243,7 @@ class CalculatorActivity : AppCompatActivity() {
                 }
             }
             if (hasPromotion) {
-                Log.d("calculator", "hasPromotion : "+ hasPromotion)
+                Log.d("calculator", "hasPromotion : " + hasPromotion)
                 return@forEach
             }
         }
@@ -246,7 +256,10 @@ class CalculatorActivity : AppCompatActivity() {
         )
     }
 
-    fun calculatePriceOfChildPromotion(strPrice: String, promotion: PromotionModel?): CalculateResponseModel {
+    fun calculatePriceOfChildPromotion(
+        strPrice: String,
+        promotion: PromotionModel?
+    ): CalculateResponseModel {
         val price = strPrice.toFloat()
         var count = 0
         var promotionLimit = 0

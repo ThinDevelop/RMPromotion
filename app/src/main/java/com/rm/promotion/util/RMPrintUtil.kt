@@ -243,7 +243,7 @@ class RMPrintUtil {
                     SunmiPrintHelper.getInstance().printTitle("\nจำนวน $promotionTotal สิทธิ์")
                     when (templateModel.type) {
                         "0" -> {
-                            if (templateModel.type_detail.isNotEmpty()) {
+                            if (templateModel.type_detail != null && templateModel.type_detail.isNotEmpty()) {
                                 SunmiPrintHelper.getInstance()
                                     .printQr(templateModel.type_detail, print_size, error_level)
                             } else {
@@ -252,15 +252,15 @@ class RMPrintUtil {
                             SunmiPrintHelper.getInstance().printSubtitle(qrText)
                         }
                         "1" -> {
-                            if (templateModel.type_detail.isNotEmpty()) {
+                            if (templateModel.type_detail != null && templateModel.type_detail.isNotEmpty()) {
                                 SunmiPrintHelper.getInstance()
                                     .printBarcode(templateModel.type_detail)
                             } else {
-                                SunmiPrintHelper.getInstance().printBarcode("barcode dynamic")
+                                SunmiPrintHelper.getInstance().printBarcode(templateModel.type_detail)
                             }
                         }
                         "2" -> {
-                            if (templateModel.type_detail.isNotEmpty()) {
+                            if (templateModel.type_detail != null && templateModel.type_detail.isNotEmpty()) {
                                 SunmiPrintHelper.getInstance().printTitle(templateModel.type_detail)
                             }
                         }
@@ -280,7 +280,7 @@ class RMPrintUtil {
                     SunmiPrintHelper.getInstance().printTitle("จำนวน $promotionTotal สิทธิ์")
                     when (templateModel.type) {
                         "0" -> {
-                            if (templateModel.type_detail.isNotEmpty()) {
+                            if (templateModel.type_detail != null && templateModel.type_detail.isNotEmpty()) {
                                 SunmiPrintHelper.getInstance()
                                     .printQr(templateModel.type_detail, print_size, error_level)
                             } else {
@@ -289,7 +289,7 @@ class RMPrintUtil {
                             SunmiPrintHelper.getInstance().printSubtitle(qrText)
                         }
                         "1" -> {
-                            if (templateModel.type_detail.isNotEmpty()) {
+                            if (templateModel.type_detail != null && templateModel.type_detail.isNotEmpty()) {
                                 SunmiPrintHelper.getInstance()
                                     .printBarcode(templateModel.type_detail)
                             } else {
@@ -297,7 +297,7 @@ class RMPrintUtil {
                             }
                         }
                         "2" -> {
-                            if (templateModel.type_detail.isNotEmpty()) {
+                            if (templateModel.type_detail != null && templateModel.type_detail.isNotEmpty()) {
                                 SunmiPrintHelper.getInstance().printTitle(templateModel.type_detail)
                             }
                         }
@@ -349,7 +349,7 @@ class RMPrintUtil {
                     SunmiPrintHelper.getInstance().printTitle("\nจำนวน $promotionTotal สิทธิ์")
                     when (templateModel.type) {
                         "0" -> {
-                            if (templateModel.type_detail.isNotEmpty()) {
+                            if (templateModel.type_detail != null && templateModel.type_detail.isNotEmpty()) {
                                 SunmiPrintHelper.getInstance()
                                     .printQr(templateModel.type_detail, print_size, error_level)
                             } else {
@@ -358,7 +358,7 @@ class RMPrintUtil {
                             SunmiPrintHelper.getInstance().printSubtitle(qrText)
                         }
                         "1" -> {
-                            if (templateModel.type_detail.isNotEmpty()) {
+                            if (templateModel.type_detail != null && templateModel.type_detail.isNotEmpty()) {
                                 SunmiPrintHelper.getInstance()
                                     .printBarcode(templateModel.type_detail)
                             } else {
@@ -366,7 +366,7 @@ class RMPrintUtil {
                             }
                         }
                         "2" -> {
-                            if (templateModel.type_detail.isNotEmpty()) {
+                            if (templateModel.type_detail != null && templateModel.type_detail.isNotEmpty()) {
                                 SunmiPrintHelper.getInstance().printTitle(templateModel.type_detail)
                             }
                         }
@@ -387,7 +387,7 @@ class RMPrintUtil {
 
                     when (templateModel.type) {
                         "0" -> {
-                            if (templateModel.type_detail.isNotEmpty()) {
+                            if (templateModel.type_detail != null && templateModel.type_detail.isNotEmpty()) {
                                 SunmiPrintHelper.getInstance()
                                     .printQr(templateModel.type_detail, print_size, error_level)
                             } else {
@@ -396,15 +396,15 @@ class RMPrintUtil {
                             SunmiPrintHelper.getInstance().printSubtitle(qrText)
                         }
                         "1" -> {
-                            if (templateModel.type_detail.isNotEmpty()) {
+                            if (templateModel.type_detail != null && templateModel.type_detail.isNotEmpty()) {
                                 SunmiPrintHelper.getInstance()
                                     .printBarcode(templateModel.type_detail)
                             } else {
-                                SunmiPrintHelper.getInstance().printBarcode("barcode dynamic")
+                                SunmiPrintHelper.getInstance().printBarcode("1234")
                             }
                         }
                         "2" -> {
-                            if (templateModel.type_detail.isNotEmpty()) {
+                            if (templateModel.type_detail != null && templateModel.type_detail.isNotEmpty()) {
                                 SunmiPrintHelper.getInstance().printTitle(templateModel.type_detail)
                             }
                         }
