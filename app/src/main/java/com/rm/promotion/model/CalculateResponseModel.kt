@@ -6,4 +6,5 @@ data class CalculateResponseModel(
     val templateModel: MutableList<TemplateModel>,
     val promotionName: String,
     val childPromotion: PromotionModel?,
+    val printType: Int
 )

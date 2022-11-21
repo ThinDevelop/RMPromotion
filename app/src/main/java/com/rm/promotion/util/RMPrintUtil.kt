@@ -191,7 +191,9 @@ class RMPrintUtil {
             price: String,
             qr: String,
             qrText: String,
-            promotionTotal: String
+            promotionTotal: String,
+            hasChild: Boolean,
+            printType: Int
         ) {
             val simpleDate = SimpleDateFormat(DateFormatConstant.dd_MM_yyyy_HH_mm_ss)
             val currentDate = simpleDate.format(createdAt)
@@ -217,95 +219,128 @@ class RMPrintUtil {
             SunmiPrintHelper.getInstance().printSubtitle("THANK YOU AND WELCOME")
 
             templateModels.forEach { templateModel ->
-                when (templateModel.line_type) {
-                    "0" -> {
-                        SunmiPrintHelper.getInstance().printSplitCut(context)
-                    }
-                    "1" -> {
-                        SunmiPrintHelper.getInstance().printSplit1()
-                    }
-                    else -> {
-                        SunmiPrintHelper.getInstance().printSplitSpace()
-                    }
-                }
-                SunmiPrintHelper.getInstance().setAlign(1)
-
-                val details = templateModel.detail
-                if (details.size > 0) {
-                    for (detail in details) {
-                        var fontSize = 20f
-                        if ("0".equals(detail.type)) {
-                            fontSize = detail.text_font.toFloat()
-                            SunmiPrintHelper.getInstance()
-                                .printWithSize(detail.text_detail, fontSize * 1.8f)
-                        }
-                    }
-                    SunmiPrintHelper.getInstance().printTitle("\nจำนวน $promotionTotal สิทธิ์")
-                    when (templateModel.type) {
-                        "0" -> {
-                            if (templateModel.type_detail != null && templateModel.type_detail.isNotEmpty()) {
-                                SunmiPrintHelper.getInstance()
-                                    .printQr(templateModel.type_detail, print_size, error_level)
-                            } else {
-                                SunmiPrintHelper.getInstance().printQr(qr, print_size, error_level)
-                            }
-                            SunmiPrintHelper.getInstance().printSubtitle(qrText)
-                        }
-                        "1" -> {
-                            if (templateModel.type_detail != null && templateModel.type_detail.isNotEmpty()) {
-                                SunmiPrintHelper.getInstance()
-                                    .printBarcode(templateModel.type_detail)
-                            } else {
-                                SunmiPrintHelper.getInstance().printBarcode(templateModel.type_detail)
-                            }
-                        }
-                        "2" -> {
-                            if (templateModel.type_detail != null && templateModel.type_detail.isNotEmpty()) {
-                                SunmiPrintHelper.getInstance().printTitle(templateModel.type_detail)
-                            }
-                        }
-                    }
-                    SunmiPrintHelper.getInstance().printText("\n")
-                    SunmiPrintHelper.getInstance().setAlign(0)
-
-                    for (detail in details) {
-                        var fontSize = 20f
-                        if ("1".equals(detail.type)) {
-                            fontSize = detail.text_font.toFloat()
-                            SunmiPrintHelper.getInstance()
-                                .printWithSize(detail.text_detail, fontSize * 1.5f)
-                        }
+                if (printType == 1) {
+                    for (i in 1..promotionTotal.toInt()) {
+                        printFromTemplate(
+                            context,
+                            qr,
+                            qrText,
+                            "1",
+                            templateModel
+                        )
                     }
                 } else {
-                    SunmiPrintHelper.getInstance().printTitle("จำนวน $promotionTotal สิทธิ์")
-                    when (templateModel.type) {
-                        "0" -> {
-                            if (templateModel.type_detail != null && templateModel.type_detail.isNotEmpty()) {
-                                SunmiPrintHelper.getInstance()
-                                    .printQr(templateModel.type_detail, print_size, error_level)
-                            } else {
-                                SunmiPrintHelper.getInstance().printQr(qr, print_size, error_level)
-                            }
-                            SunmiPrintHelper.getInstance().printSubtitle(qrText)
+                    printFromTemplate(
+                        context,
+                        qr,
+                        qrText,
+                        promotionTotal,
+                        templateModel
+                    )
+                }
+            }
+            if (!hasChild) {
+                SunmiPrintHelper.getInstance().feedPaper()
+                SunmiPrintHelper.getInstance().feedPaper()
+            }
+        }
+
+        private fun printFromTemplate(
+            context: Context,
+            qr: String,
+            qrText: String,
+            promotionTotal: String,
+            templateModel: TemplateModel
+        ) {
+            val print_size = 6
+            val error_level = 3
+            when (templateModel.line_type) {
+                "0" -> {
+                    SunmiPrintHelper.getInstance().printSplitCut(context)
+                }
+                "1" -> {
+                    SunmiPrintHelper.getInstance().printSplit1()
+                }
+                else -> {
+                    SunmiPrintHelper.getInstance().printSplitSpace()
+                }
+            }
+            SunmiPrintHelper.getInstance().setAlign(1)
+
+            val details = templateModel.detail
+            if (details.size > 0) {
+                for (detail in details) {
+                    var fontSize = 20f
+                    if ("0".equals(detail.type)) {
+                        fontSize = detail.text_font.toFloat()
+                        SunmiPrintHelper.getInstance()
+                            .printWithSize(detail.text_detail, fontSize * 1.8f)
+                    }
+                }
+                SunmiPrintHelper.getInstance().printTitle("\nจำนวน $promotionTotal สิทธิ์")
+                when (templateModel.type) {
+                    "0" -> {
+                        if (templateModel.type_detail != null && templateModel.type_detail.isNotEmpty()) {
+                            SunmiPrintHelper.getInstance()
+                                .printQr(templateModel.type_detail, print_size, error_level)
+                        } else {
+                            SunmiPrintHelper.getInstance().printQr(qr, print_size, error_level)
                         }
-                        "1" -> {
-                            if (templateModel.type_detail != null && templateModel.type_detail.isNotEmpty()) {
-                                SunmiPrintHelper.getInstance()
-                                    .printBarcode(templateModel.type_detail)
-                            } else {
-                                SunmiPrintHelper.getInstance().printBarcode("barcode dynamic")
-                            }
+                        SunmiPrintHelper.getInstance().printSubtitle(qrText)
+                    }
+                    "1" -> {
+                        if (templateModel.type_detail != null && templateModel.type_detail.isNotEmpty()) {
+                            SunmiPrintHelper.getInstance()
+                                .printBarcode(templateModel.type_detail)
+                        } else {
+                            SunmiPrintHelper.getInstance()
+                                .printBarcode(templateModel.type_detail)
                         }
-                        "2" -> {
-                            if (templateModel.type_detail != null && templateModel.type_detail.isNotEmpty()) {
-                                SunmiPrintHelper.getInstance().printTitle(templateModel.type_detail)
-                            }
+                    }
+                    "2" -> {
+                        if (templateModel.type_detail != null && templateModel.type_detail.isNotEmpty()) {
+                            SunmiPrintHelper.getInstance().printTitle(templateModel.type_detail)
+                        }
+                    }
+                }
+                SunmiPrintHelper.getInstance().printText("\n")
+                SunmiPrintHelper.getInstance().setAlign(0)
+
+                for (detail in details) {
+                    var fontSize = 20f
+                    if ("1".equals(detail.type)) {
+                        fontSize = detail.text_font.toFloat()
+                        SunmiPrintHelper.getInstance()
+                            .printWithSize(detail.text_detail, fontSize * 1.5f)
+                    }
+                }
+            } else {
+                SunmiPrintHelper.getInstance().printTitle("จำนวน $promotionTotal สิทธิ์")
+                when (templateModel.type) {
+                    "0" -> {
+                        if (templateModel.type_detail != null && templateModel.type_detail.isNotEmpty()) {
+                            SunmiPrintHelper.getInstance()
+                                .printQr(templateModel.type_detail, print_size, error_level)
+                        } else {
+                            SunmiPrintHelper.getInstance().printQr(qr, print_size, error_level)
+                        }
+                        SunmiPrintHelper.getInstance().printSubtitle(qrText)
+                    }
+                    "1" -> {
+                        if (templateModel.type_detail != null && templateModel.type_detail.isNotEmpty()) {
+                            SunmiPrintHelper.getInstance()
+                                .printBarcode(templateModel.type_detail)
+                        } else {
+                            SunmiPrintHelper.getInstance().printBarcode("barcode dynamic")
+                        }
+                    }
+                    "2" -> {
+                        if (templateModel.type_detail != null && templateModel.type_detail.isNotEmpty()) {
+                            SunmiPrintHelper.getInstance().printTitle(templateModel.type_detail)
                         }
                     }
                 }
             }
-            SunmiPrintHelper.getInstance().feedPaper()
-            SunmiPrintHelper.getInstance().feedPaper()
         }
 
         fun printChildPromotion(
@@ -316,103 +351,134 @@ class RMPrintUtil {
             price: String,
             qr: String,
             qrText: String,
-            promotionTotal: String
+            promotionTotal: String,
+            printType: Int
         ) {
             val simpleDate = SimpleDateFormat(DateFormatConstant.dd_MM_yyyy_HH_mm_ss)
             val print_size = 6
             val error_level = 3
             SunmiPrintHelper.getInstance().setAlign(1)
             templateModels.forEach { templateModel ->
-                when (templateModel.line_type) {
-                    "0" -> {
-                        SunmiPrintHelper.getInstance().printSplitCut(context)
-                    }
-                    "1" -> {
-                        SunmiPrintHelper.getInstance().printSplit1()
-                    }
-                    else -> {
-                        SunmiPrintHelper.getInstance().printSplitSpace()
-                    }
-                }
-                SunmiPrintHelper.getInstance().setAlign(1)
-
-                val details = templateModel.detail
-                if (details.size > 0) {
-                    for (detail in details) {
-                        var fontSize = 20f
-                        if ("0".equals(detail.type)) {
-                            fontSize = detail.text_font.toFloat()
-                            SunmiPrintHelper.getInstance()
-                                .printWithSize(detail.text_detail, fontSize * 1.8f)
-                        }
-                    }
-                    SunmiPrintHelper.getInstance().printTitle("\nจำนวน $promotionTotal สิทธิ์")
-                    when (templateModel.type) {
-                        "0" -> {
-                            if (templateModel.type_detail != null && templateModel.type_detail.isNotEmpty()) {
-                                SunmiPrintHelper.getInstance()
-                                    .printQr(templateModel.type_detail, print_size, error_level)
-                            } else {
-                                SunmiPrintHelper.getInstance().printQr(qr, print_size, error_level)
-                            }
-                            SunmiPrintHelper.getInstance().printSubtitle(qrText)
-                        }
-                        "1" -> {
-                            if (templateModel.type_detail != null && templateModel.type_detail.isNotEmpty()) {
-                                SunmiPrintHelper.getInstance()
-                                    .printBarcode(templateModel.type_detail)
-                            } else {
-                                SunmiPrintHelper.getInstance().printBarcode("barcode dynamic")
-                            }
-                        }
-                        "2" -> {
-                            if (templateModel.type_detail != null && templateModel.type_detail.isNotEmpty()) {
-                                SunmiPrintHelper.getInstance().printTitle(templateModel.type_detail)
-                            }
-                        }
-                    }
-                    SunmiPrintHelper.getInstance().printText("\n")
-                    SunmiPrintHelper.getInstance().setAlign(0)
-
-                    for (detail in details) {
-                        var fontSize = 20f
-                        if ("1".equals(detail.type)) {
-                            fontSize = detail.text_font.toFloat()
-                            SunmiPrintHelper.getInstance()
-                                .printWithSize(detail.text_detail, fontSize * 1.5f)
-                        }
+                if (printType == 1) {
+                    for (i in 1..promotionTotal.toInt()) {
+                        printChildPromotionFromTemplate(
+                            context,
+                            qr,
+                            qrText,
+                            "1",
+                            templateModel
+                        )
                     }
                 } else {
-                    SunmiPrintHelper.getInstance().printTitle("จำนวน $promotionTotal สิทธิ์")
-
-                    when (templateModel.type) {
-                        "0" -> {
-                            if (templateModel.type_detail != null && templateModel.type_detail.isNotEmpty()) {
-                                SunmiPrintHelper.getInstance()
-                                    .printQr(templateModel.type_detail, print_size, error_level)
-                            } else {
-                                SunmiPrintHelper.getInstance().printQr(qr, print_size, error_level)
-                            }
-                            SunmiPrintHelper.getInstance().printSubtitle(qrText)
-                        }
-                        "1" -> {
-                            if (templateModel.type_detail != null && templateModel.type_detail.isNotEmpty()) {
-                                SunmiPrintHelper.getInstance()
-                                    .printBarcode(templateModel.type_detail)
-                            } else {
-                                SunmiPrintHelper.getInstance().printBarcode("1234")
-                            }
-                        }
-                        "2" -> {
-                            if (templateModel.type_detail != null && templateModel.type_detail.isNotEmpty()) {
-                                SunmiPrintHelper.getInstance().printTitle(templateModel.type_detail)
-                            }
-                        }
-                    }
+                    printChildPromotionFromTemplate(
+                        context,
+                        qr,
+                        qrText,
+                        promotionTotal,
+                        templateModel
+                    )
                 }
             }
             SunmiPrintHelper.getInstance().feedPaper()
             SunmiPrintHelper.getInstance().feedPaper()
+        }
+
+        private fun printChildPromotionFromTemplate(
+            context: Context,
+            qr: String,
+            qrText: String,
+            promotionTotal: String,
+            templateModel: TemplateModel
+        ) {
+            val print_size = 6
+            val error_level = 3
+            when (templateModel.line_type) {
+                "0" -> {
+                    SunmiPrintHelper.getInstance().printSplitCut(context)
+                }
+                "1" -> {
+                    SunmiPrintHelper.getInstance().printSplit1()
+                }
+                else -> {
+                    SunmiPrintHelper.getInstance().printSplitSpace()
+                }
+            }
+            SunmiPrintHelper.getInstance().setAlign(1)
+
+            val details = templateModel.detail
+            if (details.size > 0) {
+                for (detail in details) {
+                    var fontSize = 20f
+                    if ("0".equals(detail.type)) {
+                        fontSize = detail.text_font.toFloat()
+                        SunmiPrintHelper.getInstance()
+                            .printWithSize(detail.text_detail, fontSize * 1.8f)
+                    }
+                }
+                SunmiPrintHelper.getInstance().printTitle("\nจำนวน $promotionTotal สิทธิ์")
+                when (templateModel.type) {
+                    "0" -> {
+                        if (templateModel.type_detail != null && templateModel.type_detail.isNotEmpty()) {
+                            SunmiPrintHelper.getInstance()
+                                .printQr(templateModel.type_detail, print_size, error_level)
+                        } else {
+                            SunmiPrintHelper.getInstance().printQr(qr, print_size, error_level)
+                        }
+                        SunmiPrintHelper.getInstance().printSubtitle(qrText)
+                    }
+                    "1" -> {
+                        if (templateModel.type_detail != null && templateModel.type_detail.isNotEmpty()) {
+                            SunmiPrintHelper.getInstance()
+                                .printBarcode(templateModel.type_detail)
+                        } else {
+                            SunmiPrintHelper.getInstance().printBarcode("barcode dynamic")
+                        }
+                    }
+                    "2" -> {
+                        if (templateModel.type_detail != null && templateModel.type_detail.isNotEmpty()) {
+                            SunmiPrintHelper.getInstance().printTitle(templateModel.type_detail)
+                        }
+                    }
+                }
+                SunmiPrintHelper.getInstance().printText("\n")
+                SunmiPrintHelper.getInstance().setAlign(0)
+
+                for (detail in details) {
+                    var fontSize = 20f
+                    if ("1".equals(detail.type)) {
+                        fontSize = detail.text_font.toFloat()
+                        SunmiPrintHelper.getInstance()
+                            .printWithSize(detail.text_detail, fontSize * 1.5f)
+                    }
+                }
+            } else {
+                SunmiPrintHelper.getInstance().printTitle("จำนวน $promotionTotal สิทธิ์")
+
+                when (templateModel.type) {
+                    "0" -> {
+                        if (templateModel.type_detail != null && templateModel.type_detail.isNotEmpty()) {
+                            SunmiPrintHelper.getInstance()
+                                .printQr(templateModel.type_detail, print_size, error_level)
+                        } else {
+                            SunmiPrintHelper.getInstance().printQr(qr, print_size, error_level)
+                        }
+                        SunmiPrintHelper.getInstance().printSubtitle(qrText)
+                    }
+                    "1" -> {
+                        if (templateModel.type_detail != null && templateModel.type_detail.isNotEmpty()) {
+                            SunmiPrintHelper.getInstance()
+                                .printBarcode(templateModel.type_detail)
+                        } else {
+                            SunmiPrintHelper.getInstance().printBarcode("1234")
+                        }
+                    }
+                    "2" -> {
+                        if (templateModel.type_detail != null && templateModel.type_detail.isNotEmpty()) {
+                            SunmiPrintHelper.getInstance().printTitle(templateModel.type_detail)
+                        }
+                    }
+                }
+            }
         }
     }
 }

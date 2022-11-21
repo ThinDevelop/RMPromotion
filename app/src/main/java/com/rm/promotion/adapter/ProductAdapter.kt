@@ -1,13 +1,14 @@
 package com.rm.promotion.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
-import android.media.Image
+import android.graphics.BitmapFactory
+import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
-import com.rm.promotion.ProductType
 import com.rm.promotion.ProductTypeManager
 import com.rm.promotion.R
 import com.rm.promotion.model.ProductModel
@@ -31,6 +32,7 @@ class ProductAdapter(val context: Context, val item: MutableList<ProductModel>) 
         return position.toLong()
     }
 
+    @SuppressLint("ResourceAsColor")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         var view = convertView
         if (convertView == null) {
@@ -40,6 +42,19 @@ class ProductAdapter(val context: Context, val item: MutableList<ProductModel>) 
         view?.findViewById<ImageView>(R.id.product).let {
             val productType = ProductTypeManager.getProductType(getItem(position).code)
             it?.setImageResource(productType.res)
+            val strBase64 = getItem(position).image
+            when {
+                strBase64 != null -> {
+                    val decodedString: ByteArray = Base64.decode(strBase64, Base64.DEFAULT)
+                    val decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
+                    it?.setImageBitmap(decodedByte)
+                }
+                else -> {
+                    val productType = ProductTypeManager.getProductType(getItem(position).code)
+                    it?.setBackgroundColor(R.color.black)
+                }
+            }
+
         }
 
         return view!!

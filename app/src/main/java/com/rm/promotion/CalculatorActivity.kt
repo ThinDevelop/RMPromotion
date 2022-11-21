@@ -57,6 +57,16 @@ class CalculatorActivity : AppCompatActivity() {
                             val promotionCount = calculatePrice.promotionTotal
                             val templateModels = calculatePrice.templateModel
                             val childPromotion = calculatePrice.childPromotion
+                            val printType = calculatePrice.printType
+
+                            //childPro
+                            val calChildPromotion =
+                                calculatePriceOfChildPromotion(strPrice, childPromotion)
+                            val calPromotionId = calChildPromotion.promotionId
+                            val calPromotionCount = calChildPromotion.promotionTotal
+                            val calTemplateModel = calChildPromotion.templateModel
+                            val calPrintType = calChildPromotion.printType
+
                             val slipDetails = mutableListOf<SlipDetail>()
                             val createdAt = Date()
                             if (promotionCount > 0) {
@@ -74,14 +84,12 @@ class CalculatorActivity : AppCompatActivity() {
                                     strPrice.toDouble().toCurrency(),
                                     linkQR,
                                     qrText,
-                                    promotionCount.toString()
+                                    promotionCount.toString(),
+                                    calPromotionCount > 0,
+                                    printType
                                 )
 
-                                val calChildPromotion =
-                                    calculatePriceOfChildPromotion(strPrice, childPromotion)
-                                val calPromotionId = calChildPromotion.promotionId
-                                val calPromotionCount = calChildPromotion.promotionTotal
-                                val calTemplateModel = calChildPromotion.templateModel
+
                                 if (calPromotionCount > 0) {
                                     val childPromotionTotal =
                                         if (calPromotionCount <= 9) "0$calPromotionCount" else calPromotionCount.toString()
@@ -99,7 +107,8 @@ class CalculatorActivity : AppCompatActivity() {
                                         strPrice.toDouble().toCurrency(),
                                         childLinkQR,
                                         childQrText,
-                                        calPromotionCount.toString()
+                                        calPromotionCount.toString(),
+                                        calPrintType
                                     )
                                 }
 
@@ -173,6 +182,7 @@ class CalculatorActivity : AppCompatActivity() {
         var promotionLimit = 0
         var hasPromotion = false
         var promotionId = ""
+        var printType = 0
         var templateModel = mutableListOf<TemplateModel>()
         var promotionName = ""
         var childPromotion: PromotionModel? = null
@@ -231,6 +241,7 @@ class CalculatorActivity : AppCompatActivity() {
                                 3 -> promotionId = promotion.code
                             }
                             promotionName = promotion.name
+                            printType = promotion.print_type
                             if (promotion.templates.size > 0) {
                                 templateModel = promotion.templates
                             }
@@ -252,7 +263,8 @@ class CalculatorActivity : AppCompatActivity() {
             promotionTotal = if (count > promotionLimit) promotionLimit else count,
             templateModel = templateModel,
             promotionName = promotionName,
-            childPromotion = childPromotion
+            childPromotion = childPromotion,
+            printType = printType
         )
     }
 
@@ -264,6 +276,7 @@ class CalculatorActivity : AppCompatActivity() {
         var count = 0
         var promotionLimit = 0
         var promotionId = ""
+        var printType = 0
         var templateModel = mutableListOf<TemplateModel>()
         var promotionName = ""
 
@@ -319,6 +332,7 @@ class CalculatorActivity : AppCompatActivity() {
                                 3 -> promotionId = promotion.code
                             }
                             promotionName = promotion.name
+                            printType = promotion.print_type
                             if (promotion.templates.size > 0) {
                                 templateModel = promotion.templates
                             }
@@ -332,7 +346,8 @@ class CalculatorActivity : AppCompatActivity() {
             promotionTotal = if (count > promotionLimit) promotionLimit else count,
             templateModel = templateModel,
             promotionName = promotionName,
-            childPromotion = null
+            childPromotion = null,
+            printType = printType
         )
     }
 

@@ -126,30 +126,39 @@ class MainActivity : AppCompatActivity() {
         val summaryModel = Gson().fromJson(orgData.toString(), SummaryDate::class.java)
         RMPrintUtil.printReportDay(this@MainActivity, summaryModel)
         FileUtils.deleteSummaryDay(this@MainActivity)
-        NetworkManager.closeShift(newObj, object : NetworkManager.Companion.NetworkLisener<CloseShiftResponseModel> {
+        NetworkManager.closeShiftOk(newObj, object : NetworkManager.Companion.NetworkLisener<CloseShiftResponseModel> {
             override fun onResponse(response: CloseShiftResponseModel) {
+                runOnUiThread {
                 dialog.dismiss()
                 PreferenceUtils.preferenceKeyCurrentShift = "1"
                 PreferenceUtils.preferenceKeyBusinessDate = response.business_date
 
                 FileUtils.deleteJsonObjectFromFile(this@MainActivity)
                 logoutWithMSG(getString(R.string.dialog_msg_close_day_complete))
+
+                }
                 //success delete file and logout
             }
 
             override fun onError(errorModel: NetworkErrorModel) {
-                Toast.makeText(this@MainActivity, "ข้อมูลยังไม่ถูกส่งไปยังฐานข้อมูล", Toast.LENGTH_LONG).show()
-                dialog.dismiss()
-                PreferenceUtils.preferenceKeyCurrentShift = "1"
-                val strDate = PreferenceUtils.preferenceKeyBusinessDate
-                val sdf = SimpleDateFormat(DateFormatConstant.yyyy_M_dd, Locale.getDefault())
+                runOnUiThread {
+                    Toast.makeText(
+                        this@MainActivity,
+                        "ข้อมูลยังไม่ถูกส่งไปยังฐานข้อมูล",
+                        Toast.LENGTH_LONG
+                    ).show()
+                    dialog.dismiss()
+                    PreferenceUtils.preferenceKeyCurrentShift = "1"
+                    val strDate = PreferenceUtils.preferenceKeyBusinessDate
+                    val sdf = SimpleDateFormat(DateFormatConstant.yyyy_M_dd, Locale.getDefault())
 
-                val c: Calendar = Calendar.getInstance()
-                c.setTime(sdf.parse(strDate))
-                c.add(Calendar.DATE, 1) // number of days to add
-                val date = sdf.format(c.getTime())
-                PreferenceUtils.preferenceKeyBusinessDate = date
-                logoutWithMSG(getString(R.string.dialog_msg_close_day_complete))
+                    val c: Calendar = Calendar.getInstance()
+                    c.setTime(sdf.parse(strDate))
+                    c.add(Calendar.DATE, 1) // number of days to add
+                    val date = sdf.format(c.getTime())
+                    PreferenceUtils.preferenceKeyBusinessDate = date
+                    logoutWithMSG(getString(R.string.dialog_msg_close_day_complete))
+                }
             //logout shift = 1 and businessDate +1
             }
 
@@ -176,22 +185,30 @@ class MainActivity : AppCompatActivity() {
         FileUtils.deleteSummaryShift(this@MainActivity)
         val file = File(this@MainActivity.getExternalFilesDir("data"), "data_summary_shift.json")
         Log.d("delete file","file exists : "+ file.exists())
-        NetworkManager.closeShift(newObj, object : NetworkManager.Companion.NetworkLisener<CloseShiftResponseModel> {
+        NetworkManager.closeShiftOk(newObj, object : NetworkManager.Companion.NetworkLisener<CloseShiftResponseModel> {
             override fun onResponse(response: CloseShiftResponseModel) {
-                dialog.dismiss()
-                val shift = PreferenceUtils.preferenceKeyCurrentShift.toInt() +1
-                PreferenceUtils.preferenceKeyCurrentShift = shift.toString()
-                FileUtils.deleteJsonObjectFromFile(this@MainActivity)
-                logoutWithMSG(getString(R.string.dialog_msg_close_shift_s_complete, oldShift))
-                //success delete file and logout add new shift and businessDate
+                runOnUiThread {
+                    dialog.dismiss()
+                    val shift = PreferenceUtils.preferenceKeyCurrentShift.toInt() + 1
+                    PreferenceUtils.preferenceKeyCurrentShift = shift.toString()
+                    FileUtils.deleteJsonObjectFromFile(this@MainActivity)
+                    logoutWithMSG(getString(R.string.dialog_msg_close_shift_s_complete, oldShift))
+                    //success delete file and logout add new shift and businessDate
+                }
             }
 
             override fun onError(errorModel: NetworkErrorModel) {
-                Toast.makeText(this@MainActivity, "ข้อมูลยังไม่ถูกส่งไปยังฐานข้อมูล", Toast.LENGTH_LONG).show()
-                dialog.dismiss()
-                val shift = PreferenceUtils.preferenceKeyCurrentShift.toInt() +1
-                PreferenceUtils.preferenceKeyCurrentShift = shift.toString()
-                logoutWithMSG(getString(R.string.dialog_msg_close_shift_s_complete, oldShift))
+                runOnUiThread {
+                    Toast.makeText(
+                        this@MainActivity,
+                        "ข้อมูลยังไม่ถูกส่งไปยังฐานข้อมูล",
+                        Toast.LENGTH_LONG
+                    ).show()
+                    dialog.dismiss()
+                    val shift = PreferenceUtils.preferenceKeyCurrentShift.toInt() + 1
+                    PreferenceUtils.preferenceKeyCurrentShift = shift.toString()
+                    logoutWithMSG(getString(R.string.dialog_msg_close_shift_s_complete, oldShift))
+                }
                 //logout shift+1 and businessDate
             }
 

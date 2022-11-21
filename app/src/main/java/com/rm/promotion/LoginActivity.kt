@@ -53,7 +53,7 @@ class LoginActivity : AppCompatActivity() {
     fun login(username: String, password: String) {
         val dialog = DialogUtils.getLoadingDialog(this@LoginActivity)
         dialog.show()
-        NetworkManager.login(username, password, object : NetworkManager.Companion.NetworkLoginLisener<LoginResponseModel> {
+        NetworkManager.loginOk(username, password, object : NetworkManager.Companion.NetworkLoginLisener<LoginResponseModel> {
             override fun onResponse(response: LoginResponseModel) {
                 Log.d("login", "onResponse")
                 dialog.dismiss()
@@ -156,16 +156,17 @@ class LoginActivity : AppCompatActivity() {
                     user_id = PreferenceUtils.currentUserId
                 )
                 FileUtils.saveLogin(this@LoginActivity, login)
-                if (!response.promotion_sync || PreferenceUtils.promotion.isEmpty()) {
-                    getMaster()
-                } else {
-                    getMaster()
-
-//                    toMainActivity()
+                runOnUiThread {
+                    if (!response.promotion_sync || PreferenceUtils.promotion.isEmpty()) {
+                        getMaster()
+                    } else {
+                        toMainActivity()
+                    }
                 }
             }
 
             override fun onResponseOffline() {
+                dialog.dismiss()
                 if (FileUtils.fileIsExists(this@LoginActivity)) {
                     val transactionModel = FileUtils.getFile(this@LoginActivity)
                     if (isNewBusinessDate(transactionModel)) {
@@ -286,7 +287,8 @@ class LoginActivity : AppCompatActivity() {
     fun getMaster() {
         val dialog = DialogUtils.getLoadingDialog(this@LoginActivity)
         dialog.show()
-        NetworkManager.getDataMaster(object : NetworkManager.Companion.NetworkLisener<RMDataModel> {
+
+        NetworkManager.getDataMasterOk(object : NetworkManager.Companion.NetworkLisener<RMDataModel> {
             override fun onResponse(response: RMDataModel) {
                 dialog.dismiss()
                 Log.d("getDataMaster", "onResponse")

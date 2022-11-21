@@ -45,10 +45,13 @@ class ReportActivity : AppCompatActivity() {
             if ("ทั้งวัน".equals(pickerVals.get(shiftPicker))) {
                 shift = "null"
             }
-            NetworkManager.getReport(date2, shift, object : NetworkManager.Companion.NetworkLisener<GetReportResponseModel> {
+            NetworkManager.getReportOk(date2, shift, object : NetworkManager.Companion.NetworkLisener<GetReportResponseModel> {
                 override fun onResponse(response: GetReportResponseModel) {
                     if (response.promotion.isEmpty()) {
-                        Toast.makeText(this@ReportActivity, R.string.promotion_not_found, Toast.LENGTH_LONG).show()
+                        runOnUiThread {
+                            Toast.makeText(this@ReportActivity, R.string.promotion_not_found, Toast.LENGTH_LONG).show()
+                        }
+
                     } else {
                         RMPrintUtil.printReport(
                             reportModel = response,
@@ -58,7 +61,9 @@ class ReportActivity : AppCompatActivity() {
                 }
 
                 override fun onError(errorModel: NetworkErrorModel) {
-                    Toast.makeText(this@ReportActivity, R.string.promotion_not_found, Toast.LENGTH_LONG).show()
+                    runOnUiThread {
+                        Toast.makeText(this@ReportActivity, R.string.promotion_not_found, Toast.LENGTH_LONG).show()
+                    }
                 }
 
                 override fun onExpired() {
