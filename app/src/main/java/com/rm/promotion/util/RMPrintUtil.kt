@@ -332,7 +332,7 @@ class RMPrintUtil {
                             SunmiPrintHelper.getInstance()
                                 .printBarcode(templateModel.type_detail)
                         } else {
-                            SunmiPrintHelper.getInstance().printBarcode("barcode dynamic")
+//                            SunmiPrintHelper.getInstance().printBarcode("barcode dynamic")
                         }
                     }
                     "2" -> {
@@ -432,7 +432,7 @@ class RMPrintUtil {
                             SunmiPrintHelper.getInstance()
                                 .printBarcode(templateModel.type_detail)
                         } else {
-                            SunmiPrintHelper.getInstance().printBarcode("barcode dynamic")
+//                            SunmiPrintHelper.getInstance().printBarcode("barcode dynamic")
                         }
                     }
                     "2" -> {
@@ -470,7 +470,7 @@ class RMPrintUtil {
                             SunmiPrintHelper.getInstance()
                                 .printBarcode(templateModel.type_detail)
                         } else {
-                            SunmiPrintHelper.getInstance().printBarcode("1234")
+//                            SunmiPrintHelper.getInstance().printBarcode("1234")
                         }
                     }
                     "2" -> {
