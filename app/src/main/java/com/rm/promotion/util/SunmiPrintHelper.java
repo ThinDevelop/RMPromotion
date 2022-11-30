@@ -380,11 +380,25 @@ public class SunmiPrintHelper {
     }
 
     public void printBarcode(String data) throws RemoteException {
-        sunmiPrinterService.printBarCode(data, BarcodeEncodeType.CODE93.getId(), 120, 2, 2, null);
+        sunmiPrinterService.printBarCode(data, BarcodeEncodeType.EAN13.getId(), 120, 2, 2, null);
     }
 
     public void printTitle(String text) {
         printText(text+"\n", 25f, true, false);
+    }
+
+    public void printSingleLineWithSize(String text, float size) {
+        try {
+            sunmiPrinterService.setFontSize(size, null);
+            sunmiPrinterService.sendLCDString(text, new InnerLcdCallback() {
+                @Override
+                public void onRunResult(boolean show) throws RemoteException {
+
+                }
+            });
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
     }
 
     public void printWithSize(String text, float size) {
@@ -393,6 +407,10 @@ public class SunmiPrintHelper {
 
     public void printWithSize(String text, float size, boolean isBold) {
         printText(text+"\n", size, isBold, false);
+    }
+
+    public void printSubtitleNoNewLine(String text) {
+        printText(text, 20f, false, false);
     }
 
     public void printSubtitle(String text) {

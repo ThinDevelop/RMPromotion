@@ -273,6 +273,7 @@ class RMPrintUtil {
                     var fontSize = 20f
                     if ("0".equals(detail.type)) {
                         fontSize = detail.text_font.toFloat()
+//                        SunmiPrintHelper.getInstance().printSingleLineWithSize(detail.text_detail, fontSize * 1.8f)
                         SunmiPrintHelper.getInstance()
                             .printWithSize(detail.text_detail, fontSize * 1.8f)
                     }
@@ -286,15 +287,15 @@ class RMPrintUtil {
                         } else {
                             SunmiPrintHelper.getInstance().printQr(qr, print_size, error_level)
                         }
-                        SunmiPrintHelper.getInstance().printSubtitle(qrText)
+                        SunmiPrintHelper.getInstance().printSubtitleNoNewLine(qrText)
                     }
                     "1" -> {
                         if (templateModel.type_detail != null && templateModel.type_detail.isNotEmpty()) {
                             SunmiPrintHelper.getInstance()
                                 .printBarcode(templateModel.type_detail)
                         } else {
-                            SunmiPrintHelper.getInstance()
-                                .printBarcode(templateModel.type_detail)
+//                            SunmiPrintHelper.getInstance()
+//                                .printBarcode(templateModel.type_detail)
                         }
                     }
                     "2" -> {
@@ -424,7 +425,7 @@ class RMPrintUtil {
                         } else {
                             SunmiPrintHelper.getInstance().printQr(qr, print_size, error_level)
                         }
-                        SunmiPrintHelper.getInstance().printSubtitle(qrText)
+                        SunmiPrintHelper.getInstance().printSubtitleNoNewLine(qrText)
                     }
                     "1" -> {
                         if (templateModel.type_detail != null && templateModel.type_detail.isNotEmpty()) {
