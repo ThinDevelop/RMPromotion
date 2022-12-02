@@ -117,6 +117,7 @@ class NetworkManager {
                                 val businessDate = shiftObj.optString("date", "")
                                 val station = data.optJSONObject("station")
                                 val stationId = station.optString("id")
+                                val stationCode = station.optString("code")
                                 val stationName = station.optString("name_th")
                                 val shift = shiftObj.optString("shift", "")
                                 val profile = data.optJSONObject("profile")
@@ -134,6 +135,7 @@ class NetworkManager {
                                 PreferenceUtils.setUsers(users?.toString())
 //                            PreferenceUtils.setProducts(products?.toString())
                                 PreferenceUtils.stationId = stationId
+                                PreferenceUtils.stationCode = stationCode
                                 PreferenceUtils.stationName = stationName
 
                                 listener.onResponse(loginResponseModel)

@@ -21,6 +21,7 @@ object PreferenceUtils {
     private const val PREFERENCE_KEY_CURRENT_SHIFT = "current_shift"
     private const val PREFERENCE_KEY_BUSINESS_DATE = "business_date"
     private const val PREFERENCE_KEY_STATION_ID = "station_id"
+    private const val PREFERENCE_KEY_STATION_CODE = "station_code"
     private const val PREFERENCE_KEY_STATION_NAME = "station_name"
     private const val PREFERENCE_KEY_USERS = "master_users"
     private const val PREFERENCE_KEY_PRODUCT = "master_product"
@@ -39,6 +40,12 @@ object PreferenceUtils {
         set(userId) {
             val editor = sharedPreferences.edit()
             editor.putString(PREFERENCE_KEY_STATION_ID, userId).apply()
+        }
+    var stationCode: String
+        get() = sharedPreferences.getString(PREFERENCE_KEY_STATION_CODE, "").toString()
+        set(userId) {
+            val editor = sharedPreferences.edit()
+            editor.putString(PREFERENCE_KEY_STATION_CODE, userId).apply()
         }
     var stationName: String?
         get() = sharedPreferences.getString(PREFERENCE_KEY_STATION_NAME, "")

@@ -9,6 +9,7 @@ import com.rm.promotion.databinding.ActivityCalcuratorBinding
 import com.rm.promotion.model.*
 import com.rm.promotion.model.DateFormatConstant.dd_MM_yyyy_HH_mm_ss
 import com.rm.promotion.util.*
+import com.rm.promotion.util.PreferenceUtils.promotion
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -17,6 +18,8 @@ class CalculatorActivity : AppCompatActivity() {
     var productType = ProductType.UNSUPPORTED_FORMAT
     var productId = ""
     var productName = ""
+    val OLD_PRO = 0
+    val NEW_PRO = 1
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCalcuratorBinding.inflate(layoutInflater)
@@ -353,18 +356,61 @@ class CalculatorActivity : AppCompatActivity() {
 
     fun getPromotionWithPriority(strPrice: String): List<PromotionModel> {
         val price = strPrice.toFloat()
+        val nowDate = Calendar.getInstance().time
         val promotionList = mutableListOf<PromotionModel>()
-        PreferenceUtils.promotion.forEach { promotion ->
-
-            val nowDate = Calendar.getInstance().time
+        val promotionList2 = mutableListOf<PromotionModel>()
+        promotion.forEach { promotion ->
+            var childPromotion: PromotionModel? = null
+            promotion.child_id?.let {
+                promotion.child_promotion?.let {
+                    promotion.child_promotion_code = it.code
+                    promotion.priority1 = it.priority
+                }
+            }
+            promotionList.add(promotion)
+        }
+        promotionList.forEach { promotion ->
             val startPrice = promotion.start_price.toFloat()
             val startDate = promotion.start_date.toDate(DateFormatConstant.yyyy_MM_dd_HH_mm_ss_SSS)
             val endDate = promotion.end_date.toDate(DateFormatConstant.yyyy_MM_dd_HH_mm_ss_SSS)
+            var startPrice2 = 0f
+            var startDate2 = Date()
+            var endDate2 = Date()
+            promotion.child_promotion?.let {
+                 startPrice2 = it.start_price.toFloat()
+                 startDate2 = it.start_date.toDate(DateFormatConstant.yyyy_MM_dd_HH_mm_ss_SSS)
+                 endDate2 = it.end_date.toDate(DateFormatConstant.yyyy_MM_dd_HH_mm_ss_SSS)
+            }
 
-            if (nowDate.after(startDate) && nowDate.before(endDate) && price >= startPrice) {
-                promotionList.add(promotion)
+            if ((nowDate.after(startDate) && nowDate.before(endDate) && price >= startPrice) || (promotion.child_promotion != null && nowDate.after(startDate2) && nowDate.before(endDate2) && price >= startPrice2)) {
+                if (promotionList2.size > 0) {
+                    val pro = promotionList2.first()
+                    val x = promotion.priority1?.let { ObjectCompare(priority = it, promotionCode = promotion.child_promotion_code!!, NEW_PRO) }
+                    val y = pro.priority1?.let { ObjectCompare(priority = it, promotionCode = pro.child_promotion_code!!, OLD_PRO) }
+
+                    val list = mutableListOf(
+                        ObjectCompare(priority = pro.priority, promotionCode = pro.code, OLD_PRO),
+                        ObjectCompare(priority = promotion.priority, promotionCode = promotion.code, NEW_PRO),
+                        x,
+                        y
+                    )
+                    list.removeAll(listOf(null))
+                    list.sortedWith(compareBy({ it?.priority }, { it?.promotionCode }))
+                    list.first()?.let {
+                        promotionList2.clear()
+                        if (it.pro == NEW_PRO) {
+                            promotionList2.add(promotion)
+                        } else {
+                            promotionList2.add(pro)
+                        }
+                    }
+                } else {
+                    promotionList2.add(promotion)
+                }
             }
         }
-        return promotionList.sortedBy { it.priority }
+        return promotionList2
     }
+
+    data class ObjectCompare(val priority: Int, val promotionCode: String, val pro: Int)
 }

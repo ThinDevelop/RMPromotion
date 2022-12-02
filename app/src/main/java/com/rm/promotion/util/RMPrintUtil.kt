@@ -273,9 +273,8 @@ class RMPrintUtil {
                     var fontSize = 20f
                     if ("0".equals(detail.type)) {
                         fontSize = detail.text_font.toFloat()
-//                        SunmiPrintHelper.getInstance().printSingleLineWithSize(detail.text_detail, fontSize * 1.8f)
                         SunmiPrintHelper.getInstance()
-                            .printWithSize(detail.text_detail, fontSize * 1.8f)
+                            .printWithSize(detail.text_detail, fontSize * 1.4f)
                     }
                 }
                 SunmiPrintHelper.getInstance().printTitle("\nจำนวน $promotionTotal สิทธิ์")
@@ -413,7 +412,7 @@ class RMPrintUtil {
                     if ("0".equals(detail.type)) {
                         fontSize = detail.text_font.toFloat()
                         SunmiPrintHelper.getInstance()
-                            .printWithSize(detail.text_detail, fontSize * 1.8f)
+                            .printWithSize(detail.text_detail, fontSize * 1.6f)
                     }
                 }
                 SunmiPrintHelper.getInstance().printTitle("\nจำนวน $promotionTotal สิทธิ์")
