@@ -395,7 +395,7 @@ class CalculatorActivity : AppCompatActivity() {
                         y
                     )
                     list.removeAll(listOf(null))
-                    list.sortedWith(compareBy({ it?.priority }, { it?.promotionCode }))
+                    list.sortedWith(compareBy<ObjectCompare?> { it?.priority }.thenByDescending{ it?.promotionCode })
                     list.first()?.let {
                         promotionList2.clear()
                         if (it.pro == NEW_PRO) {
