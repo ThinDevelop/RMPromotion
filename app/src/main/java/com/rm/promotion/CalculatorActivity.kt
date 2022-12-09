@@ -360,7 +360,6 @@ class CalculatorActivity : AppCompatActivity() {
         val promotionList = mutableListOf<PromotionModel>()
         val promotionList2 = mutableListOf<PromotionModel>()
         promotion.forEach { promotion ->
-            var childPromotion: PromotionModel? = null
             promotion.child_id?.let {
                 promotion.child_promotion?.let {
                     promotion.child_promotion_code = it.code
@@ -377,32 +376,55 @@ class CalculatorActivity : AppCompatActivity() {
             var startDate2 = Date()
             var endDate2 = Date()
             promotion.child_promotion?.let {
-                 startPrice2 = it.start_price.toFloat()
-                 startDate2 = it.start_date.toDate(DateFormatConstant.yyyy_MM_dd_HH_mm_ss_SSS)
-                 endDate2 = it.end_date.toDate(DateFormatConstant.yyyy_MM_dd_HH_mm_ss_SSS)
+                startPrice2 = it.start_price.toFloat()
+                startDate2 = it.start_date.toDate(DateFormatConstant.yyyy_MM_dd_HH_mm_ss_SSS)
+                endDate2 = it.end_date.toDate(DateFormatConstant.yyyy_MM_dd_HH_mm_ss_SSS)
             }
 
-            if ((nowDate.after(startDate) && nowDate.before(endDate) && price >= startPrice) || (promotion.child_promotion != null && nowDate.after(startDate2) && nowDate.before(endDate2) && price >= startPrice2)) {
+            if ((nowDate.after(startDate) && nowDate.before(endDate) && price >= startPrice) || (promotion.child_promotion != null && nowDate.after(
+                    startDate2
+                ) && nowDate.before(endDate2) && price >= startPrice2)
+            ) {
                 if (promotionList2.size > 0) {
                     val pro = promotionList2.first()
-                    val x = promotion.priority1?.let { ObjectCompare(priority = it, promotionCode = promotion.child_promotion_code!!, NEW_PRO) }
-                    val y = pro.priority1?.let { ObjectCompare(priority = it, promotionCode = pro.child_promotion_code!!, OLD_PRO) }
+                    val x = promotion.priority1?.let {
+                        ObjectCompare(
+                            priority = it,
+                            promotionCode = promotion.child_promotion_code!!,
+                            NEW_PRO
+                        )
+                    }
+                    val y = pro.priority1?.let {
+                        ObjectCompare(
+                            priority = it,
+                            promotionCode = pro.child_promotion_code!!,
+                            OLD_PRO
+                        )
+                    }
 
                     val list = mutableListOf(
                         ObjectCompare(priority = pro.priority, promotionCode = pro.code, OLD_PRO),
-                        ObjectCompare(priority = promotion.priority, promotionCode = promotion.code, NEW_PRO),
+                        ObjectCompare(
+                            priority = promotion.priority,
+                            promotionCode = promotion.code,
+                            NEW_PRO
+                        ),
                         x,
                         y
                     )
                     list.removeAll(listOf(null))
-                    list.sortedWith(compareBy<ObjectCompare?> { it?.priority }.thenByDescending{ it?.promotionCode })
-                    list.first()?.let {
-                        promotionList2.clear()
-                        if (it.pro == NEW_PRO) {
-                            promotionList2.add(promotion)
-                        } else {
-                            promotionList2.add(pro)
+                    list.sortWith(compareBy({ it?.priority }))
+                    var orderList: ObjectCompare? = null
+                    list.forEach {
+                        if (orderList == null || (orderList?.priority == it?.priority && orderList?.promotionCode?.toInt()!! < it?.promotionCode?.toInt()!!)) {
+                            orderList = it
                         }
+                    }
+                    promotionList2.clear()
+                    if (orderList?.pro == NEW_PRO) {
+                        promotionList2.add(promotion)
+                    } else {
+                        promotionList2.add(pro)
                     }
                 } else {
                     promotionList2.add(promotion)

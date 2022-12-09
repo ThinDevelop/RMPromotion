@@ -277,9 +277,9 @@ class RMPrintUtil {
                             .printWithSize(detail.text_detail, fontSize * 1.4f)
                     }
                 }
-                SunmiPrintHelper.getInstance().printTitle("\nจำนวน $promotionTotal สิทธิ์")
                 when (templateModel.type) {
                     "0" -> {
+                        SunmiPrintHelper.getInstance().printTitle("\nจำนวน $promotionTotal สิทธิ์")
                         if (templateModel.type_detail != null && templateModel.type_detail.isNotEmpty()) {
                             SunmiPrintHelper.getInstance()
                                 .printQr(templateModel.type_detail, print_size, error_level)
@@ -289,6 +289,7 @@ class RMPrintUtil {
                         SunmiPrintHelper.getInstance().printSubtitleNoNewLine(qrText)
                     }
                     "1" -> {
+                        SunmiPrintHelper.getInstance().printTitle("\nจำนวน $promotionTotal สิทธิ์")
                         if (templateModel.type_detail != null && templateModel.type_detail.isNotEmpty()) {
                             SunmiPrintHelper.getInstance()
                                 .printBarcode(templateModel.type_detail)
@@ -315,9 +316,9 @@ class RMPrintUtil {
                     }
                 }
             } else {
-                SunmiPrintHelper.getInstance().printTitle("จำนวน $promotionTotal สิทธิ์")
                 when (templateModel.type) {
                     "0" -> {
+                        SunmiPrintHelper.getInstance().printTitle("จำนวน $promotionTotal สิทธิ์")
                         if (templateModel.type_detail != null && templateModel.type_detail.isNotEmpty()) {
                             SunmiPrintHelper.getInstance()
                                 .printQr(templateModel.type_detail, print_size, error_level)
@@ -327,6 +328,7 @@ class RMPrintUtil {
                         SunmiPrintHelper.getInstance().printSubtitle(qrText)
                     }
                     "1" -> {
+                        SunmiPrintHelper.getInstance().printTitle("จำนวน $promotionTotal สิทธิ์")
                         if (templateModel.type_detail != null && templateModel.type_detail.isNotEmpty()) {
                             SunmiPrintHelper.getInstance()
                                 .printBarcode(templateModel.type_detail)
@@ -415,9 +417,10 @@ class RMPrintUtil {
                             .printWithSize(detail.text_detail, fontSize * 1.4f)
                     }
                 }
-                SunmiPrintHelper.getInstance().printTitle("\nจำนวน $promotionTotal สิทธิ์")
+
                 when (templateModel.type) {
                     "0" -> {
+                        SunmiPrintHelper.getInstance().printTitle("\nจำนวน $promotionTotal สิทธิ์")
                         if (templateModel.type_detail != null && templateModel.type_detail.isNotEmpty()) {
                             SunmiPrintHelper.getInstance()
                                 .printQr(templateModel.type_detail, print_size, error_level)
@@ -427,6 +430,7 @@ class RMPrintUtil {
                         SunmiPrintHelper.getInstance().printSubtitleNoNewLine(qrText)
                     }
                     "1" -> {
+                        SunmiPrintHelper.getInstance().printTitle("\nจำนวน $promotionTotal สิทธิ์")
                         if (templateModel.type_detail != null && templateModel.type_detail.isNotEmpty()) {
                             SunmiPrintHelper.getInstance()
                                 .printBarcode(templateModel.type_detail)
@@ -452,10 +456,11 @@ class RMPrintUtil {
                     }
                 }
             } else {
-                SunmiPrintHelper.getInstance().printTitle("จำนวน $promotionTotal สิทธิ์")
+
 
                 when (templateModel.type) {
                     "0" -> {
+                        SunmiPrintHelper.getInstance().printTitle("จำนวน $promotionTotal สิทธิ์")
                         if (templateModel.type_detail != null && templateModel.type_detail.isNotEmpty()) {
                             SunmiPrintHelper.getInstance()
                                 .printQr(templateModel.type_detail, print_size, error_level)
@@ -465,6 +470,7 @@ class RMPrintUtil {
                         SunmiPrintHelper.getInstance().printSubtitle(qrText)
                     }
                     "1" -> {
+                        SunmiPrintHelper.getInstance().printTitle("จำนวน $promotionTotal สิทธิ์")
                         if (templateModel.type_detail != null && templateModel.type_detail.isNotEmpty()) {
                             SunmiPrintHelper.getInstance()
                                 .printBarcode(templateModel.type_detail)
