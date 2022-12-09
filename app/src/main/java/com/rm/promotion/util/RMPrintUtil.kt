@@ -311,7 +311,7 @@ class RMPrintUtil {
                     if ("1".equals(detail.type)) {
                         fontSize = detail.text_font.toFloat()
                         SunmiPrintHelper.getInstance()
-                            .printWithSize(detail.text_detail, fontSize * 1.5f)
+                            .printWithSize(detail.text_detail, fontSize * 1.4f)
                     }
                 }
             } else {
@@ -412,7 +412,7 @@ class RMPrintUtil {
                     if ("0".equals(detail.type)) {
                         fontSize = detail.text_font.toFloat()
                         SunmiPrintHelper.getInstance()
-                            .printWithSize(detail.text_detail, fontSize * 1.6f)
+                            .printWithSize(detail.text_detail, fontSize * 1.4f)
                     }
                 }
                 SunmiPrintHelper.getInstance().printTitle("\nจำนวน $promotionTotal สิทธิ์")
@@ -448,7 +448,7 @@ class RMPrintUtil {
                     if ("1".equals(detail.type)) {
                         fontSize = detail.text_font.toFloat()
                         SunmiPrintHelper.getInstance()
-                            .printWithSize(detail.text_detail, fontSize * 1.5f)
+                            .printWithSize(detail.text_detail, fontSize * 1.4f)
                     }
                 }
             } else {
