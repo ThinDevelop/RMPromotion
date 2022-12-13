@@ -363,7 +363,7 @@ class CalculatorActivity : AppCompatActivity() {
             promotion.child_id?.let {
                 promotion.child_promotion?.let {
                     promotion.child_promotion_code = it.code
-                    promotion.priority1 = it.priority
+                    promotion.priority1 = promotion.priority
                 }
             }
             promotionList.add(promotion)
@@ -387,28 +387,43 @@ class CalculatorActivity : AppCompatActivity() {
             ) {
                 if (promotionList2.size > 0) {
                     val pro = promotionList2.first()
-                    val x = promotion.priority1?.let {
-                        ObjectCompare(
-                            priority = it,
-                            promotionCode = promotion.child_promotion_code!!,
-                            NEW_PRO
-                        )
+                    var x: ObjectCompare? = null
+                    if (price >= startPrice2) {
+                        x = promotion.priority1?.let {
+                            ObjectCompare(
+                                priority = it,
+                                promotionCode = promotion.child_promotion_code!!,
+                                NEW_PRO
+                            )
+                        }
                     }
-                    val y = pro.priority1?.let {
-                        ObjectCompare(
-                            priority = it,
-                            promotionCode = pro.child_promotion_code!!,
-                            OLD_PRO
+                    var y: ObjectCompare? = null
+                    val childPrice = pro.child_promotion?.start_price?.toFloat()
+                    if (childPrice != null && price >= childPrice) {
+                        y = pro.priority1?.let {
+                            ObjectCompare(
+                                priority = it,
+                                promotionCode = pro.child_promotion_code!!,
+                                OLD_PRO
+                            )
+                        }
+                    }
+                    var a: ObjectCompare? = null
+                    var b: ObjectCompare? = null
+                    if (pro.start_price != null && price >= pro.start_price.toFloat()) {
+                        a = ObjectCompare(priority = pro.priority, promotionCode = pro.code, OLD_PRO)
+                    }
+                    if (price >= startPrice) {
+                        b = ObjectCompare(
+                            priority = promotion.priority,
+                            promotionCode = promotion.code,
+                            NEW_PRO
                         )
                     }
 
                     val list = mutableListOf(
-                        ObjectCompare(priority = pro.priority, promotionCode = pro.code, OLD_PRO),
-                        ObjectCompare(
-                            priority = promotion.priority,
-                            promotionCode = promotion.code,
-                            NEW_PRO
-                        ),
+                        a,
+                        b,
                         x,
                         y
                     )
