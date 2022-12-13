@@ -380,7 +380,7 @@ public class SunmiPrintHelper {
     }
 
     public void printBarcode(String data) throws RemoteException {
-        sunmiPrinterService.printBarCode(data+"a", BarcodeEncodeType.CODE128A.getId(), 120, 2, 2, null);
+        sunmiPrinterService.printBarCode(data, BarcodeEncodeType.CODE128A.getId(), 120, 2, 2, null);
     }
 
     public void printTitle(String text) {
