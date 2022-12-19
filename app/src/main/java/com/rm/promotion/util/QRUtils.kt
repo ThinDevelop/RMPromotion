@@ -14,16 +14,16 @@ class QRUtils {
             var qrCode = ""
             var qrcodeText = ""
             val data = StringBuilder()
-            var stationId = PreferenceUtils.stationId
-            when (stationId.length) {
-                1 -> stationId = "00000"+stationId
-                2 -> stationId = "0000"+stationId
-                3 -> stationId = "000"+stationId
-                4 -> stationId = "00"+stationId
-                5 -> stationId = "0"+stationId
-                else -> stationId
+            var stationCode = PreferenceUtils.stationCode
+            when (stationCode.length) {
+                1 -> stationCode = "00000"+stationCode
+                2 -> stationCode = "0000"+stationCode
+                3 -> stationCode = "000"+stationCode
+                4 -> stationCode = "00"+stationCode
+                5 -> stationCode = "0"+stationCode
+                else -> stationCode
             }
-            data.append(stationId)
+            data.append(stationCode)
             data.append(promotionId)
             data.append("0")//station_status
             val random = getPromotionRunning()
