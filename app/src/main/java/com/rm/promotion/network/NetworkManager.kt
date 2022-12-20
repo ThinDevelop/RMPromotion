@@ -133,7 +133,7 @@ class NetworkManager {
                                 PreferenceUtils.cashierName = name
                                 PreferenceUtils.loginTime = System.currentTimeMillis().toString()
                                 PreferenceUtils.setUsers(users?.toString())
-//                            PreferenceUtils.setProducts(products?.toString())
+                                PreferenceUtils.setProducts(products?.toString())
                                 PreferenceUtils.stationId = stationId
                                 PreferenceUtils.stationCode = stationCode
                                 PreferenceUtils.stationName = stationName
@@ -236,7 +236,7 @@ class NetworkManager {
 
                                 PreferenceUtils.setPromotion(promotion.toString())
                                 PreferenceUtils.setUsers(users?.toString())
-                                PreferenceUtils.setProducts(products?.toString())
+//                                PreferenceUtils.setProducts(products?.toString())
                                 val rmDataModel =
                                     Gson().fromJson(data.toString(), RMDataModel::class.java)
 

@@ -45,7 +45,12 @@ class ProductAdapter(val context: Context, val item: MutableList<ProductModel>) 
             val strBase64 = getItem(position).image
             when {
                 strBase64 != null -> {
-                    val decodedString: ByteArray = Base64.decode(strBase64, Base64.DEFAULT)
+                    var finalBase64 = strBase64
+                    val lastIndex = strBase64.indexOf("base64,")
+                    if (lastIndex != -1) {
+                        finalBase64 = strBase64.substring(lastIndex+"base64,".length)
+                    }
+                    val decodedString: ByteArray = Base64.decode(finalBase64, Base64.DEFAULT)
                     val decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
                     it?.setImageBitmap(decodedByte)
                 }
