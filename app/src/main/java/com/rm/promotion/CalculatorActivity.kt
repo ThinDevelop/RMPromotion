@@ -1,7 +1,9 @@
 package com.rm.promotion
 
 import android.content.Context
+import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.util.Base64
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -15,7 +17,6 @@ import java.util.*
 
 class CalculatorActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCalcuratorBinding
-    var productType = ProductType.UNSUPPORTED_FORMAT
     var productId = ""
     var productName = ""
     val OLD_PRO = 0
@@ -27,8 +28,18 @@ class CalculatorActivity : AppCompatActivity() {
         val productCode = intent.getStringExtra("product_code") ?: ""
         productId = intent.getStringExtra("product_id") ?: ""
         productName = intent.getStringExtra("product_name") ?: ""
-        productType = ProductTypeManager.getProductType(productCode)
-        binding.imageView.setImageResource(productType.res)
+        val product = PreferenceUtils.products.filter { it.id == productId }.firstOrNull()
+        product?.let {
+            val strBase64 = it.image
+            var finalBase64 = strBase64
+            val lastIndex = strBase64.indexOf("base64,")
+            if (lastIndex != -1) {
+                finalBase64 = strBase64.substring(lastIndex+"base64,".length)
+            }
+            val decodedString: ByteArray = Base64.decode(finalBase64, Base64.DEFAULT)
+            val decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
+            binding.imageView.setImageBitmap(decodedByte)
+        }
         binding.btnBack.setOnClickListener {
             onBackPressed()
         }
