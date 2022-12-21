@@ -9,7 +9,7 @@ class QRUtils {
             if (promotionTotal.length > 2) return Pair("","")
             val domain_uat = "https://posoillucktest.pttor.com/Register?data="
             val domain_prod = "https://pttstationluckydraw.pttor.com/Register?data="
-            val domain = domain_uat
+            val domain = domain_prod
 
             var qrCode = ""
             var qrcodeText = ""
