@@ -69,6 +69,12 @@ class FileUtils {
                     val json = Gson().toJson(transactionModel)
                     writeFile(context, file, JSONObject(json))
                 } else {
+                    val login = Login(
+                        login_time = PreferenceUtils.loginTime,
+                        business_date = PreferenceUtils.preferenceKeyBusinessDate,
+                        shift = PreferenceUtils.preferenceKeyCurrentShift,
+                        user_id = PreferenceUtils.currentUserId
+                    )
                     val transactionModel = TransactionModel(
                         station_id = PreferenceUtils.stationId,
                         mobile_pos_id = android.os.Build.SERIAL,
@@ -76,7 +82,7 @@ class FileUtils {
                         user_id = PreferenceUtils.currentUserId,
                         shift = PreferenceUtils.preferenceKeyCurrentShift,
                         slip = mutableListOf(),
-                        login = mutableListOf(),
+                        login = mutableListOf(login),
                         shift_data = mutableListOf(shift)
                     )
                     val json = Gson().toJson(transactionModel)

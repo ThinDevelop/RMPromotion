@@ -204,12 +204,6 @@ class NetworkManager {
                                 val data = it.getJSONObject("data")
                                 val promotion = data.getJSONArray("promotions")
                                 val users = data.optJSONArray("users")
-                                val products = data.optJSONArray("products")
-                                val station = data.optJSONObject("station")
-                                val stationId = station.optString("id")
-                                val stationName = station.optString("name_th")
-                                PreferenceUtils.stationId = stationId
-                                PreferenceUtils.stationName = stationName
                                 for (i in 0 until promotion.length()) {
                                     val promo = promotion.getJSONObject(i)
                                     if (promo.has("templates")) {
@@ -236,7 +230,6 @@ class NetworkManager {
 
                                 PreferenceUtils.setPromotion(promotion.toString())
                                 PreferenceUtils.setUsers(users?.toString())
-//                                PreferenceUtils.setProducts(products?.toString())
                                 val rmDataModel =
                                     Gson().fromJson(data.toString(), RMDataModel::class.java)
 
